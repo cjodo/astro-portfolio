@@ -1,0 +1,75 @@
+---
+import grainSVG from '../assets/grain.svg';
+import DownArrow from './icons/DownArrow.astro';
+---
+
+<section
+	id="hero"
+	class="relative h-[80vh] flex flex-col items-center justify-center text-[#171717] overflow-hidden shadow-lg"
+	style={`background-image: url('${grainSVG.src}'); background-repeat: repeat; border-radius: 0 0 3.3rem 3.3rem`}
+>
+	<!-- Content -->
+	<div class="relative z-20 px-6 backdrop-blur-[2px] rounded-lg text-blue-700 p-6">
+		<h1 class="text-5xl md:text-7xl font-bold tracking-tight">
+			Curtis O'Donnell 
+		</h1>
+		<p class="mt-6 text-lg text-[#171717]/90 max-w-xl mx-auto">
+			Modern Web Designs and Solutions.
+		</p>
+		<p class="mt-6 text-lg text-[#171717]/90 max-w-xl mx-auto">
+			<a href="#about" class="bg-zinc-800 py-2 px-4 text-white rounded-sm">Get Started</a>
+		</p>
+	</div>
+
+	<!-- Cursor glow element -->
+	<div id="cursor-glow" style="
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 160px;
+		height: 80px;
+		pointer-events: none;
+		border-radius: 50%;
+		background: linear-gradient(90deg, rgba(0,150,255,0.9), rgba(0,100,255,0.4), rgba(0,200,255,0.4));
+		filter: blur(50px);
+		opacity: 0.2;
+		transform: translate(-50%, -50%);
+		z-index: 9999;
+		transition: transform 0.05s ease-out, opacity 0.2s ease;
+		opacity: 0;
+		"></div>
+</section>
+
+<!-- Button halfway through the bottom of the hero -->
+<a href="#about">
+	<button
+		class="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black text-white rounded-full w-16 h-16 flex items-center justify-center z-30 cursor-pointer"
+		style={`top: calc(80vh);`}
+	>
+		<DownArrow/>
+	</button>
+</a>
+
+<script>
+const cursor = document.getElementById('cursor-glow');
+const hero = document.getElementById('hero');
+
+// Show the glow when entering the hero
+hero.addEventListener('mouseenter', () => {
+	cursor.style.opacity = '0.2';
+});
+
+// Hide the glow when leaving the hero
+hero.addEventListener('mouseleave', () => {
+	cursor.style.opacity = '0';
+});
+
+// Move the glow with the mouse
+hero.addEventListener('mousemove', e => {
+	const x = e.clientX;
+	const y = e.clientY;
+
+	cursor.style.transform = `translate(${x}px, ${y}px)`;
+});
+</script>
+

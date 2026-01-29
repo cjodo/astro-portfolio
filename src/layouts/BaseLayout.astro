@@ -1,0 +1,44 @@
+---
+import "../styles/global.css";
+import "../styles/grain.css";
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Hero Test</title>
+	</head>
+	<body class="bg-white text-black">
+		<slot />
+	</body>
+</html>
+
+
+<script>
+const header = document.getElementById("site-header");
+const hero = document.getElementById("hero");
+
+if (header && hero) {
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        header.classList.remove("bg-white", "shadow-sm");
+        header.classList.add("bg-transparent");
+        header.style.color = "#171717";
+      } else {
+        header.classList.remove("bg-transparent");
+        header.classList.add("bg-white", "shadow-sm");
+        header.style.color = "#1F4ED8";
+      }
+    },
+    { threshold: 0.1 }
+  );
+  observer.observe(hero);
+}
+</script>
+

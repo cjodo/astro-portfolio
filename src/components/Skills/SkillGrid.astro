@@ -1,0 +1,19 @@
+---
+import { type Skill } from './SkillCard.astro'
+
+const { skill } = Astro.props
+
+interface Props {
+	skill: Skill
+}
+---
+
+<div class="relative group w-24 h-24 flex items-center justify-center cursor-pointer">
+	{/* Logo */}
+	<img src={skill.logo} alt={skill.name} class="w-16 h-16 object-contain transition-transform duration-300 group-hover:scale-110" />
+
+	{/* Title on hover */}
+	<div class="absolute inset-0 flex items-center justify-center bg-black/70 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">
+		{skill.name}
+	</div>
+</div>
