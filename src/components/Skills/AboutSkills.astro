@@ -1,0 +1,274 @@
+---
+import SkillCard from './SkillCard.astro';
+import type { Skill, SkillCategory } from '../../data/skills';
+import { skillsByCategory, categoryLabels } from '../../data/skills';
+import { getAnimationDelay } from '../../utils/animations';
+
+const { skills, showProficiency = true, compact = false } = Astro.props
+
+interface Props {
+	skills: Skill[]
+	showProficiency?: boolean
+	compact?: boolean
+}
+
+// For compact view, we'll use JavaScript to limit initial display
+const displaySkills = skills;
+---
+
+<!-- Skills Section for About Me -->
+<div class="skills-section">
+  <!-- Filter and Sort Controls -->
+  <div class="skills-controls mb-6">
+    <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+      <!-- Proficiency Filter -->
+      <div class="flex flex-wrap gap-2 items-center">
+        <span class="text-sm font-medium text-gray-700">Filter by level:</span>
+        <div class="flex gap-2" id="about-proficiency-filters">
+          <button 
+            data-proficiency="all" 
+            class="proficiency-filter px-3 py-1 text-xs rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-colors font-medium"
+            aria-label="Show all skills"
+          >
+            All
+          </button>
+          <button
+            data-proficiency="beginner"
+            class="proficiency-filter px-3 py-1 text-xs rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors font-medium"
+            aria-label="Show beginner skills"
+          >
+            Beginner
+          </button>
+          <button
+            data-proficiency="intermediate"
+            class="proficiency-filter px-3 py-1 text-xs rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors font-medium"
+            aria-label="Show intermediate skills"
+          >
+            Intermediate
+          </button>
+          <button
+            data-proficiency="advanced"
+            class="proficiency-filter px-3 py-1 text-xs rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors font-medium"
+            aria-label="Show advanced skills"
+          >
+            Advanced
+          </button>
+          <button
+            data-proficiency="expert"
+            class="proficiency-filter px-3 py-1 text-xs rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors font-medium"
+            aria-label="Show expert skills"
+          >
+            Expert
+          </button>
+        </div>
+      </div>
+      
+      <!-- Sort Dropdown -->
+      <div class="flex gap-2 items-center">
+        <label for="about-sort-select" class="text-sm font-medium text-gray-700">Sort:</label>
+        <select 
+          id="about-sort-select"
+          class="px-3 py-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="name-asc">Name (A-Z)</option>
+          <option value="name-desc">Name (Z-A)</option>
+          <option value="proficiency-desc">Proficiency (High-Low)</option>
+          <option value="proficiency-asc">Proficiency (Low-High)</option>
+          <option value="category">Category</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skills Grid -->
+  <div id="about-skills-container" class="relative">
+    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-4 skills-grid">
+      {displaySkills.map((skill, i) => (
+        <div
+          data-animate
+          class="animate-scale-in animate-stagger skill-item"
+          data-skill-name={skill.name}
+          data-proficiency={skill.proficiency || 'none'}
+          data-category={skill.category}
+          style={`--delay: ${getAnimationDelay(i)}`}
+        >
+          <SkillCard skill={skill} showProficiency={showProficiency} />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Show More Button for Compact View -->
+  {compact && skills.length > 12 && (
+    <div class="mt-6 text-center">
+      <button 
+        id="show-more-skills"
+        class="px-4 py-2 text-sm bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-colors font-medium"
+        aria-label="Show all skills"
+      >
+        Show All Skills ({skills.length})
+      </button>
+    </div>
+  )}
+</div>
+
+<script is:inline>
+  // Simple skills manager without external dependencies
+  document.addEventListener('DOMContentLoaded', function() {
+    class AboutSkillsManager {
+    constructor() {
+      this.currentProficiency = 'all';
+      this.currentSort = 'name-asc';
+      this.allSkills = [];
+      this.compact = false;
+      this.expanded = false;
+      this.init();
+    }
+
+      init() {
+        // Wait a bit for everything to render
+        setTimeout(() => {
+          const proficiencyFilters = document.querySelectorAll('#about-proficiency-filters .proficiency-filter');
+          const sortSelect = document.getElementById('about-sort-select');
+          const showMoreBtn = document.getElementById('show-more-skills');
+          
+          this.compact = showMoreBtn !== null;
+          this.allSkills = Array.from(document.querySelectorAll('.skill-item'));
+          
+          console.log('Found', this.allSkills.length, 'skill items');
+          
+          // Set initial state - show all skills by default
+          // For compact view, only show first 12 initially
+          this.allSkills.forEach((item, index) => {
+            if (this.compact && index >= 12) {
+              item.style.display = 'none';
+            } else {
+              item.style.display = '';
+              item.style.order = index;
+              // Add show class to make animations visible
+              item.classList.add('show');
+            }
+          });
+          
+          if (proficiencyFilters.length > 0) {
+            proficiencyFilters.forEach(button => {
+              button.addEventListener('click', (e) => {
+                this.handleProficiencyFilter(e.target.dataset.proficiency);
+              });
+            });
+          }
+
+          if (sortSelect) {
+            sortSelect.addEventListener('change', (e) => {
+              this.handleSort(e.target.value);
+            });
+          }
+
+          if (showMoreBtn) {
+            showMoreBtn.addEventListener('click', () => {
+              this.showAllSkills();
+            });
+          }
+        }, 100);
+      }
+
+      handleProficiencyFilter(proficiency) {
+        this.currentProficiency = proficiency;
+        this.updateActiveFilterButton(proficiency);
+        this.applyFiltersAndSort();
+      }
+
+      handleSort(sortOption) {
+        this.currentSort = sortOption;
+        this.applyFiltersAndSort();
+      }
+
+      updateActiveFilterButton(activeProficiency) {
+        const buttons = document.querySelectorAll('#about-proficiency-filters .proficiency-filter');
+        buttons.forEach(button => {
+          const buttonProficiency = button.dataset.proficiency;
+          if (buttonProficiency === activeProficiency) {
+            button.className = 'proficiency-filter px-3 py-1 text-xs rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-colors font-medium';
+          } else {
+            button.className = 'proficiency-filter px-3 py-1 text-xs rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors font-medium';
+          }
+        });
+      }
+
+    applyFiltersAndSort() {
+      // In compact mode, we consider only first 12 skills unless expanded
+      const availableSkills = this.compact && !this.expanded ? 
+        this.allSkills.slice(0, 12) : 
+        this.allSkills;
+
+      // Filter by proficiency
+      const filteredItems = availableSkills.filter(item => {
+        if (this.currentProficiency === 'all') return true;
+        return item.dataset.proficiency === this.currentProficiency;
+      });
+
+      // Sort the filtered items
+      const sortedItems = this.sortItems(filteredItems);
+
+      // Hide all items first
+      this.allSkills.forEach(item => {
+        item.style.display = 'none';
+      });
+
+      // Show and reorder filtered items
+      sortedItems.forEach((item, index) => {
+        item.style.display = '';
+        item.style.order = index;
+        // Add show class to make animations visible
+        item.classList.add('show');
+      });
+    }
+
+    showAllSkills() {
+      const showMoreBtn = document.getElementById('show-more-skills');
+      if (showMoreBtn) {
+        showMoreBtn.style.display = 'none';
+      }
+      
+      // Mark as expanded so applyFiltersAndSort knows to use all skills
+      this.expanded = true;
+      
+      // Reapply filters and sorting with all skills available
+      this.applyFiltersAndSort();
+    }
+
+      sortItems(items) {
+        const sortBy = this.currentSort;
+        
+        return items.sort((a, b) => {
+          const aName = a.dataset.skillName || '';
+          const bName = b.dataset.skillName || '';
+          const aProficiency = a.dataset.proficiency || 'none';
+          const bProficiency = b.dataset.proficiency || 'none';
+          const aCategory = a.dataset.category || '';
+          const bCategory = b.dataset.category || '';
+
+          const proficiencyOrder = { 'none': 0, 'beginner': 1, 'intermediate': 2, 'advanced': 3, 'expert': 4 };
+
+          switch (sortBy) {
+            case 'name-asc':
+              return aName.localeCompare(bName);
+            case 'name-desc':
+              return bName.localeCompare(aName);
+            case 'proficiency-asc':
+              return proficiencyOrder[aProficiency] - proficiencyOrder[bProficiency];
+            case 'proficiency-desc':
+              return proficiencyOrder[bProficiency] - proficiencyOrder[aProficiency];
+            case 'category':
+              return aCategory.localeCompare(bCategory);
+            default:
+              return 0;
+          }
+        });
+      }
+    }
+
+    // Initialize the skills manager
+    new AboutSkillsManager();
+  });
+</script>
