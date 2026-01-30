@@ -1,0 +1,72 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import { projects, type Project } from '../../data/projects';
+
+interface Props {
+	projects?: Project[];
+	showFeaturedOnly?: boolean;
+	limit?: number;
+}
+
+const { 
+	projects: projectList = projects,
+	showFeaturedOnly = false,
+	limit 
+} = Astro.props;
+
+// Get projects to display
+const allProjects = (limit ? projects.slice(0, limit) : projectList);
+
+// Calculate stats
+const techCount = [...new Set(projects.flatMap(p => p.techStack))].length;
+
+
+---
+
+<section id="projects" class="py-20 bg-white">
+	<div class="max-w-6xl mx-auto px-6">
+		<!-- Section Header -->
+		<header class="text-center mb-16">
+			<h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+				{showFeaturedOnly ? 'Featured Projects' : 'Projects'}
+			</h2>
+			<p class="text-lg text-gray-600 max-w-2xl mx-auto">
+				A collection of web applications, tools, and experiments built with modern technologies
+			</p>
+		</header>
+
+
+
+		<!-- Projects Grid -->
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+			{allProjects.map((project) => (
+			<ProjectCard project={project} />
+			))}
+		</div>
+
+		<!-- View All Button (only show on featured view) -->
+		<div class="text-center mt-12">
+			<a 
+				href="#all-projects" 
+				class="inline-flex items-center gap-2 px-8 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors duration-200"
+			>
+				View All Projects ({projects.length})
+			</a>
+		</div>
+
+		<!-- Stats Section -->
+		<div class="mt-20 pt-12 border-t border-gray-200">
+			<div class="grid grid-cols-2 gap-8 text-center">
+				<div>
+					<div class="text-3xl font-bold text-gray-900">{projects.length}</div>
+					<div class="text-sm text-gray-600">Total Projects</div>
+				</div>
+				<div>
+					<div class="text-3xl font-bold text-gray-900">{techCount}</div>
+					<div class="text-sm text-gray-600">Technologies</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+

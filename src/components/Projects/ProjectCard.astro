@@ -1,0 +1,140 @@
+---
+import type { Project } from '../../data/projects';
+import { projectStatusLabels } from '../../data/projects';
+import GithubIcon from '../icons/GithubIcon.astro';
+import ExternalLinkIcon from '../icons/ExternalLinkIcon.astro';
+
+interface Props {
+	project: Project;
+	compact?: boolean;
+}
+
+const { project, compact = false } = Astro.props;
+
+const statusColors = {
+	'completed': 'bg-green-100 text-green-800',
+	'in-progress': 'bg-yellow-100 text-yellow-800',
+	'prototype': 'bg-blue-100 text-blue-800'
+};
+---
+
+<div class={`group bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 ${compact ? '' : 'h-full'}`}>
+	<!-- Project Image -->
+	<div class={`relative overflow-hidden ${compact ? 'h-40' : 'h-48'} bg-gray-100`}>
+		{project.image ? (
+			<img 
+				src={project.image} 
+				alt={project.title}
+				class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+				loading="lazy"
+			/>
+		) : (
+			<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+				<div class="text-gray-400 text-center">
+					<div class="text-4xl mb-2">📁</div>
+					<div class="text-sm">Project Image</div>
+				</div>
+			</div>
+		)}
+		
+		<!-- Status Badge -->
+		<!-- <div class="absolute top-3 right-3"> -->
+		<!-- 	<span class={`px-2 py-1 text-xs font-medium rounded-full ${statusColors[project.status]}`}> -->
+		<!-- 		{projectStatusLabels[project.status]} -->
+		<!-- 	</span> -->
+		<!-- </div> -->
+		
+		<!-- Featured Badge -->
+		<!-- {project.featured && ( -->
+		<!-- 	<div class="absolute top-3 left-3"> -->
+		<!-- 		<span class="px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800"> -->
+		<!-- 			Featured -->
+		<!-- 		</span> -->
+		<!-- 	</div> -->
+		<!-- )} -->
+	</div>
+
+	<!-- Project Content -->
+	<div class="p-6">
+		<div class="flex items-start justify-between mb-2">
+			<h3 class={`font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 ${compact ? 'text-lg' : 'text-xl'}`}>
+				{project.title}
+			</h3>
+			<span class="text-sm text-gray-500 font-medium ml-2">{project.year}</span>
+		</div>
+		
+		<p class={`text-gray-600 mb-4 ${compact ? 'text-sm line-clamp-2' : 'text-base'}`}>
+			{project.description}
+		</p>
+
+		<!-- Tech Stack -->
+		{!compact && (
+			<div class="mb-4">
+				<div class="flex flex-wrap gap-2">
+					{project.techStack.slice(0, compact ? 3 : 4).map(tech => (
+						<span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded">
+							{tech}
+						</span>
+					))}
+					{project.techStack.length > (compact ? 3 : 4) && (
+						<span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-500 rounded">
+							+{project.techStack.length - (compact ? 3 : 4)} more
+						</span>
+					)}
+				</div>
+			</div>
+		)}
+
+		<!-- Tags -->
+		<div class="mb-4">
+			<div class="flex flex-wrap gap-1">
+				{project.tags.slice(0, compact ? 2 : 3).map(tag => (
+					<span class="px-2 py-1 text-xs font-medium bg-blue-50 text-blue-700 rounded">
+						#{tag}
+					</span>
+				))}
+				{project.tags.length > (compact ? 2 : 3) && !compact && (
+					<span class="px-2 py-1 text-xs font-medium bg-blue-50 text-blue-500 rounded">
+						+{project.tags.length - 3}
+					</span>
+				)}
+			</div>
+		</div>
+
+		<!-- Action Buttons -->
+		<div class="flex gap-3 mt-auto">
+			{project.liveDemo && (
+				<a 
+					href={project.demoUrl} 
+					target="_blank" 
+					rel="noopener noreferrer"
+					class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition-colors duration-200"
+				>
+					<ExternalLinkIcon class="w-4 h-4" />
+					Live Demo
+				</a>
+			)}
+			
+			{project.githubUrl && (
+				<a 
+					href={project.githubUrl} 
+					target="_blank" 
+					rel="noopener noreferrer"
+					class="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded hover:bg-gray-50 transition-colors duration-200"
+				>
+					<GithubIcon class="w-4 h-4" />
+					{compact ? '' : 'View Code'}
+				</a>
+			)}
+		</div>
+	</div>
+</div>
+
+<style>
+	.line-clamp-2 {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+</style>
