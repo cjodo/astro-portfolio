@@ -79,42 +79,7 @@ export const PROFICIENCY_LEVELS: Record<ProficiencyLevel, { label: string; order
 	expert: { label: 'Expert', order: 4 }
 } as const
 
-export const SORT_OPTIONS = {
-	NAME_ASC: 'name-asc',
-	NAME_DESC: 'name-desc',
-	PROFICIENCY_ASC: 'proficiency-asc',
-	PROFICIENCY_DESC: 'proficiency-desc',
-	CATEGORY: 'category'
-} as const
 
-export type SortOption = typeof SORT_OPTIONS[keyof typeof SORT_OPTIONS]
-
-export function sortSkills(skills: Skill[], sortBy: SortOption): Skill[] {
-	const sorted = [...skills]
-	
-	switch (sortBy) {
-		case SORT_OPTIONS.NAME_ASC:
-			return sorted.sort((a, b) => a.name.localeCompare(b.name))
-		case SORT_OPTIONS.NAME_DESC:
-			return sorted.sort((a, b) => b.name.localeCompare(a.name))
-		case SORT_OPTIONS.PROFICIENCY_ASC:
-			return sorted.sort((a, b) => {
-				const aOrder = a.proficiency ? PROFICIENCY_LEVELS[a.proficiency].order : 999
-				const bOrder = b.proficiency ? PROFICIENCY_LEVELS[b.proficiency].order : 999
-				return aOrder - bOrder
-			})
-		case SORT_OPTIONS.PROFICIENCY_DESC:
-			return sorted.sort((a, b) => {
-				const aOrder = a.proficiency ? PROFICIENCY_LEVELS[a.proficiency].order : 0
-				const bOrder = b.proficiency ? PROFICIENCY_LEVELS[b.proficiency].order : 0
-				return bOrder - aOrder
-			})
-		case SORT_OPTIONS.CATEGORY:
-			return sorted.sort((a, b) => a.category.localeCompare(b.category))
-		default:
-			return sorted
-	}
-}
 
 export function filterSkillsByProficiency(skills: Skill[], proficiency: ProficiencyLevel | 'all'): Skill[] {
 	if (proficiency === 'all') return skills

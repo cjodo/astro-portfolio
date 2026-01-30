@@ -4,223 +4,213 @@ import type { Skill, SkillCategory } from '../../data/skills';
 import { skillsByCategory, categoryLabels } from '../../data/skills';
 import { getAnimationDelay } from '../../utils/animations';
 
-const { skills, showCategories = false, showProficiency = false, enableFiltering = false } = Astro.props
+const {
+  skills,
+  showCategories = false,
+  showProficiency = false,
+  enableFiltering = false
+} = Astro.props;
 
 interface Props {
-	skills: Skill[]
-	showCategories?: boolean
-	showProficiency?: boolean
-	enableFiltering?: boolean
+  skills: Skill[];
+  showCategories?: boolean;
+  showProficiency?: boolean;
+  enableFiltering?: boolean;
 }
 ---
 
 <section id="skills" class="py-16 bg-gray-50">
-	<skills-section
-		data-enabled={ enableFiltering ? 'true' : 'false'}
-		data-show-categories={ showCategories ? 'true' : 'false'}
-	> 
-		<div class="max-w-6xl mx-auto px-6">
-			<header data-animate class="animate-fade-up">
-				<h2 class="text-4xl font-bold text-center mb-4 text-gray-900">Skills</h2>
-				<p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
-					A comprehensive overview of my technical skills and proficiency levels across different domains.
-				</p>
+  <skills-section
+    data-enabled={enableFiltering ? 'true' : 'false'}
+    data-show-categories={showCategories ? 'true' : 'false'}
+  >
+    <div class="max-w-6xl mx-auto px-6">
+      <header data-animate class="animate-fade-up">
+        <h2 class="text-4xl font-bold text-center mb-4 text-gray-900">
+          Skills
+        </h2>
 
-				{enableFiltering && (
-				<div data-animate class="animate-fade-up mb-8" style="--delay: 0.1s" data-enabled={ enableFiltering }>
-					<div class="flex flex-col sm:flex-row gap-4 items-center justify-center bg-white rounded-lg p-4 shadow-sm">
-						<!-- Proficiency Filter -->
-						<div class="flex flex-wrap gap-2 items-center">
-							<span class="text-sm font-medium text-gray-700">Filter:</span>
-							<div class="flex gap-2" id="proficiency-filters">
-								<button 
-									data-proficiency="all" 
-									class="proficiency-filter px-3 py-1 text-sm rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-colors"
-									aria-label="Show all skills"
-								>
-									All
-								</button>
-								<button
-									data-proficiency="beginner"
-									class="proficiency-filter px-3 py-1 text-sm rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
-									aria-label="Show beginner skills"
-								>
-									Beginner
-								</button>
-								<button
-									data-proficiency="intermediate"
-									class="proficiency-filter px-3 py-1 text-sm rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
-									aria-label="Show intermediate skills"
-								>
-									Intermediate
-								</button>
-								<button
-									data-proficiency="advanced"
-									class="proficiency-filter px-3 py-1 text-sm rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
-									aria-label="Show advanced skills"
-								>
-									Advanced
-								</button>
-								<button
-									data-proficiency="expert"
-									class="proficiency-filter px-3 py-1 text-sm rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
-									aria-label="Show expert skills"
-								>
-									Expert
-								</button>
-							</div>
-						</div>
+        <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
+          A comprehensive overview of my technical skills and proficiency levels.
+        </p>
 
-						<!-- Sort Dropdown -->
-						<div class="flex gap-2 items-center">
-							<label for="sort-select" class="text-sm font-medium text-gray-700">Sort:</label>
-							<select 
-								id="sort-select"
-								class="px-3 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-							>
-								<option value="name-asc">Name (A-Z)</option>
-								<option value="name-desc">Name (Z-A)</option>
-								<option value="proficiency-desc">Proficiency (High-Low)</option>
-								<option value="proficiency-asc">Proficiency (Low-High)</option>
-								<option value="category">Category</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				)}
-			</header>
+        {enableFiltering && (
+          <div
+            data-animate
+            class="animate-fade-up mb-8"
+            style="--delay: 0.1s"
+          >
+            <div class="flex flex-col sm:flex-row gap-4 items-center justify-center bg-white rounded-lg p-4 shadow-sm">
+              <div class="flex flex-wrap gap-2 items-center">
+                <span class="text-sm font-medium text-gray-700">Filter:</span>
+                <div class="flex gap-2">
+                  {['all','beginner','intermediate','advanced','expert'].map(p => (
+                    <button
+                      data-proficiency={p}
+                      class={`proficiency-filter px-3 py-1 text-sm rounded-full transition-colors ${
+                        p === 'all'
+                          ? 'bg-gray-800 text-white'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                    >
+                      {p.charAt(0).toUpperCase() + p.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-			<!-- Skills Grid Container -->
-			<div id="skills-container" class="relative">
-				{showCategories ? (
-				<div class="space-y-16" id="categorized-skills">
-					{Object.entries(skillsByCategory).map(([category, categorySkills], categoryIndex) => (
-					<div data-animate class="animate-fade-up category-section" data-category={category} style={`--delay: ${getAnimationDelay(categoryIndex)}`}>
-						<h3 class="text-2xl font-semibold mb-8 text-center text-gray-800">
-							{categoryLabels[category as SkillCategory]}
-						</h3>
-						<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center skills-grid" data-category={category}>
-							{categorySkills.map((skill, i) => (
-							<div
-								data-animate
-								class="animate-scale-in animate-stagger skill-item"
-								data-skill-name={skill.name}
-								data-proficiency={skill.proficiency || 'none'}
-								style={`--delay: ${getAnimationDelay(i)}`}
-							>
-								<SkillCard skill={skill} showProficiency={showProficiency} />
-							</div>
-							))}
-						</div>
-					</div>
-					))}
-				</div>
-				) : (
-				<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center skills-grid" id="flat-skills">
-					{skills.map((skill, i) => (
-					<div
-						data-animate
-						class="animate-scale-in animate-stagger skill-item"
-						data-skill-name={skill.name}
-						data-proficiency={skill.proficiency || 'none'}
-						style={`--delay: ${getAnimationDelay(i)}`}
-					>
-						<SkillCard skill={skill} showProficiency={showProficiency} />
-					</div>
-					))}
-				</div>
-				)}
-			</div>
-		</div>
-	</skills-section>
+
+            </div>
+          </div>
+        )}
+      </header>
+
+      <div id="skills-container">
+        {showCategories ? (
+          <div class="space-y-16">
+            {Object.entries(skillsByCategory).map(([category, list], cIdx) => (
+              <div
+                class="category-section"
+              >
+                <h3 class="text-2xl font-semibold mb-8 text-center text-gray-800">
+                  {categoryLabels[category as SkillCategory]}
+                </h3>
+
+                <div class="skills-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
+                  {list.map((skill, i) => (
+                    <div
+                      class="skill-item animate-scale-in animate-stagger"
+                      data-animate
+                      data-skill-name={skill.name}
+                      data-proficiency={skill.proficiency || 'none'}
+                      style={`--delay:${getAnimationDelay(i)}`}
+                    >
+                      <SkillCard
+                        skill={skill}
+                        showProficiency={showProficiency}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="skills-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
+            {skills.map((skill, i) => (
+              <div
+                class="skill-item animate-scale-in "
+                data-animate
+                data-skill-name={skill.name}
+                data-proficiency={skill.proficiency || 'none'}
+                style={`--delay:${getAnimationDelay(i)}`}
+              >
+                <SkillCard
+                  skill={skill}
+                  showProficiency={showProficiency}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  </skills-section>
 </section>
 
-<script is:inline>
-class AnimationObserver {
-	constructor() {
-		this.observer = new IntersectionObserver(entries => {
-			entries.forEach(entry => {
-				if (entry.isIntersecting) {
-					entry.target.classList.add('show');
-					this.observer.unobserve(entry.target);
-				}
-			});
-		}, { threshold: 0.15 });
-	}
-
-	observe(root, selector) {
-		root.querySelectorAll(selector).forEach(el => this.observer.observe(el));
-	}
+<style>
+.skills-grid {
+  contain: layout paint;
 }
 
+.skill-item {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  will-change: opacity, transform;
+  contain: layout paint;
+}
+
+.skill-item.filter-hidden {
+  opacity: 0;
+  transform: scale(0.92);
+  pointer-events: none;
+}
+
+.category-section {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  contain: layout paint;
+}
+
+.category-hidden {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+}
+</style>
+
+<script is:inline>
 class SkillsSection extends HTMLElement {
-	connectedCallback() {
-		this.enabled = this.dataset.enabled === 'true';
-		this.showCategories = this.dataset.showCategories === 'true';
+  connectedCallback() {
+    this.enabled = this.dataset.enabled === 'true';
+    this.showCategories = this.dataset.showCategories === 'true';
 
-		this.animations = new AnimationObserver();
-		this.animations.observe(this, '[data-animate]');
+    if (!this.enabled) return;
 
-		if (!this.enabled) return;
+    this.currentProficiency = 'all';
 
-		this.currentProficiency = 'all';
-		this.currentSort = 'name-asc';
+    this.filters = this.querySelectorAll('.proficiency-filter');
+    this.grids = this.querySelectorAll('.skills-grid');
+    this.categories = this.querySelectorAll('.category-section');
 
-		this.filters = this.querySelectorAll('.proficiency-filter');
-		this.sortSelect = this.querySelector('#sort-select');
-		this.items = Array.from(this.querySelectorAll('.skill-item'));
-		this.categories = Array.from(this.querySelectorAll('.category-section'));
+    this.bind();
+  }
 
-		this.bindEvents();
-	}
+  bind() {
+    this.filters.forEach(btn =>
+      btn.addEventListener('click', () => {
+        this.currentProficiency = btn.dataset.proficiency;
+        this.updateFilterUI();
+        this.apply();
+      })
+    );
+  }
 
-	bindEvents() {
-		this.filters.forEach(btn =>
-			btn.addEventListener('click', () =>
-				this.setProficiency(btn.dataset.proficiency)
-			)
-		);
+  updateFilterUI() {
+    this.filters.forEach(btn => {
+      const active = btn.dataset.proficiency === this.currentProficiency;
+      btn.classList.toggle('bg-gray-800', active);
+      btn.classList.toggle('text-white', active);
+      btn.classList.toggle('bg-gray-200', !active);
+      btn.classList.toggle('text-gray-700', !active);
+    });
+  }
 
-		this.sortSelect?.addEventListener('change', e => {
-			this.currentSort = e.target.value;
-			this.apply();
-		});
-	}
+  apply() {
+    this.grids.forEach(grid => {
+      const items = [...grid.querySelectorAll('.skill-item')];
+      const visible = [];
+      const hidden = [];
 
-	setProficiency(level) {
-		this.currentProficiency = level;
-		this.filters.forEach(b =>
-			b.classList.toggle('bg-gray-800', b.dataset.proficiency === level)
-		);
-		this.apply();
-	}
+      items.forEach(el => {
+        const match =
+          this.currentProficiency === 'all' ||
+          el.dataset.proficiency === this.currentProficiency;
+        (match ? visible : hidden).push(el);
+      });
 
-	apply() {
-		const visible = this.items.filter(item =>
-			this.currentProficiency === 'all'
-				? true
-				: item.dataset.proficiency === this.currentProficiency
-		);
+      // Hide filtered items, show visible ones (maintaining original order)
+      items.forEach(el => {
+        const isVisible = visible.includes(el);
+        el.classList.toggle('filter-hidden', !isVisible);
+      });
+    });
 
-		visible.sort((a, b) =>
-			a.dataset.skillName.localeCompare(b.dataset.skillName)
-		);
-
-		this.items.forEach(i => (i.style.display = 'none'));
-		visible.forEach((i, idx) => {
-			i.style.display = '';
-			i.style.order = idx;
-		});
-
-		if (this.showCategories) {
-			this.categories.forEach(cat => {
-				const hasVisible = cat.querySelector('.skill-item:not([style*="none"])');
-				cat.style.display = hasVisible ? '' : 'none';
-			});
-		}
-
-		this.animations.observe(this, '.skill-item:not(.show)');
-	}
+    if (this.showCategories) {
+      this.categories.forEach(cat => {
+        const hasVisible = cat.querySelector('.skill-item:not(.filter-hidden)');
+        cat.classList.toggle('category-hidden', !hasVisible);
+      });
+    }
+  }
 }
 
 customElements.define('skills-section', SkillsSection);

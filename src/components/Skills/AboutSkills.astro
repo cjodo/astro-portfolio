@@ -62,21 +62,7 @@ const displaySkills = skills;
           </button>
         </div>
       </div>
-      
-      <!-- Sort Dropdown -->
-      <div class="flex gap-2 items-center">
-        <label for="about-sort-select" class="text-sm font-medium text-gray-700">Sort:</label>
-        <select 
-          id="about-sort-select"
-          class="px-3 py-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="name-asc">Name (A-Z)</option>
-          <option value="name-desc">Name (Z-A)</option>
-          <option value="proficiency-desc">Proficiency (High-Low)</option>
-          <option value="proficiency-asc">Proficiency (Low-High)</option>
-          <option value="category">Category</option>
-        </select>
-      </div>
+
     </div>
   </div>
 
@@ -118,7 +104,6 @@ const displaySkills = skills;
     class AboutSkillsManager {
     constructor() {
       this.currentProficiency = 'all';
-      this.currentSort = 'name-asc';
       this.allSkills = [];
       this.compact = false;
       this.expanded = false;
@@ -129,7 +114,6 @@ const displaySkills = skills;
         // Wait a bit for everything to render
         setTimeout(() => {
           const proficiencyFilters = document.querySelectorAll('#about-proficiency-filters .proficiency-filter');
-          const sortSelect = document.getElementById('about-sort-select');
           const showMoreBtn = document.getElementById('show-more-skills');
           
           this.compact = showMoreBtn !== null;
@@ -144,7 +128,6 @@ const displaySkills = skills;
               item.style.display = 'none';
             } else {
               item.style.display = '';
-              item.style.order = index;
               // Add show class to make animations visible
               item.classList.add('show');
             }
@@ -155,12 +138,6 @@ const displaySkills = skills;
               button.addEventListener('click', (e) => {
                 this.handleProficiencyFilter(e.target.dataset.proficiency);
               });
-            });
-          }
-
-          if (sortSelect) {
-            sortSelect.addEventListener('change', (e) => {
-              this.handleSort(e.target.value);
             });
           }
 
@@ -175,12 +152,7 @@ const displaySkills = skills;
       handleProficiencyFilter(proficiency) {
         this.currentProficiency = proficiency;
         this.updateActiveFilterButton(proficiency);
-        this.applyFiltersAndSort();
-      }
-
-      handleSort(sortOption) {
-        this.currentSort = sortOption;
-        this.applyFiltersAndSort();
+        this.applyFilters();
       }
 
       updateActiveFilterButton(activeProficiency) {
@@ -195,7 +167,7 @@ const displaySkills = skills;
         });
       }
 
-    applyFiltersAndSort() {
+    applyFilters() {
       // In compact mode, we consider only first 12 skills unless expanded
       const availableSkills = this.compact && !this.expanded ? 
         this.allSkills.slice(0, 12) : 
@@ -207,18 +179,14 @@ const displaySkills = skills;
         return item.dataset.proficiency === this.currentProficiency;
       });
 
-      // Sort the filtered items
-      const sortedItems = this.sortItems(filteredItems);
-
       // Hide all items first
       this.allSkills.forEach(item => {
         item.style.display = 'none';
       });
 
-      // Show and reorder filtered items
-      sortedItems.forEach((item, index) => {
+      // Show filtered items (no sorting, maintain original order)
+      filteredItems.forEach((item) => {
         item.style.display = '';
-        item.style.order = index;
         // Add show class to make animations visible
         item.classList.add('show');
       });
@@ -230,42 +198,14 @@ const displaySkills = skills;
         showMoreBtn.style.display = 'none';
       }
       
-      // Mark as expanded so applyFiltersAndSort knows to use all skills
+      // Mark as expanded so applyFilters knows to use all skills
       this.expanded = true;
       
-      // Reapply filters and sorting with all skills available
-      this.applyFiltersAndSort();
+      // Reapply filters with all skills available
+      this.applyFilters();
     }
 
-      sortItems(items) {
-        const sortBy = this.currentSort;
-        
-        return items.sort((a, b) => {
-          const aName = a.dataset.skillName || '';
-          const bName = b.dataset.skillName || '';
-          const aProficiency = a.dataset.proficiency || 'none';
-          const bProficiency = b.dataset.proficiency || 'none';
-          const aCategory = a.dataset.category || '';
-          const bCategory = b.dataset.category || '';
-
-          const proficiencyOrder = { 'none': 0, 'beginner': 1, 'intermediate': 2, 'advanced': 3, 'expert': 4 };
-
-          switch (sortBy) {
-            case 'name-asc':
-              return aName.localeCompare(bName);
-            case 'name-desc':
-              return bName.localeCompare(aName);
-            case 'proficiency-asc':
-              return proficiencyOrder[aProficiency] - proficiencyOrder[bProficiency];
-            case 'proficiency-desc':
-              return proficiencyOrder[bProficiency] - proficiencyOrder[aProficiency];
-            case 'category':
-              return aCategory.localeCompare(bCategory);
-            default:
-              return 0;
-          }
-        });
-      }
+      
     }
 
     // Initialize the skills manager
