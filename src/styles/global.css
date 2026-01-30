@@ -5,3 +5,26 @@
 	--font-saira: "Saira Stencil One", sans-serif;
 }
 
+@layer utilities {
+  .animate-fade-up {
+    @apply opacity-0 translate-y-6 transition-all duration-700 ease-out;
+  }
+
+  .animate-fade-up.show {
+    @apply opacity-100 translate-y-0;
+  }
+
+  .animate-scale-in {
+    @apply opacity-0 scale-95 transition-all duration-500 ease-out;
+  }
+
+  .animate-scale-in.show {
+    @apply opacity-100 scale-100;
+  }
+
+  .animate-stagger {
+    transition-delay: var(--delay);
+  }
+}
+
+

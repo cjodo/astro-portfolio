@@ -1,21 +1,47 @@
 ---
-
-export type Skill = {
-	name: string;
-	logo: string;
-}
-
-const { skills } = Astro.props
+const { skill, showProficiency = false } = Astro.props
+import type { Skill } from '../../data/skills'
 
 interface Props {
-	skills: Skill[]
+	skill: Skill
+	showProficiency?: boolean
+}
+
+const proficiencyColors = {
+	beginner: 'bg-red-500',
+	intermediate: 'bg-yellow-500', 
+	advanced: 'bg-blue-500',
+	expert: 'bg-green-500'
+} as const
+
+const getProficiencyLabel = (prof?: Skill['proficiency']) => {
+	if (!prof) return ''
+	return prof.charAt(0).toUpperCase() + prof.slice(1)
 }
 ---
 
+<div 
+	class="relative group w-24 h-24 flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
+	role="button"
+	tabindex="0"
+	aria-label={`${skill.name} skill${skill.proficiency ? ` - ${getProficiencyLabel(skill.proficiency)} proficiency` : ''}`}
+>
+	{/* Logo */}
+	<img 
+		src={skill.logo} 
+		alt={skill.name} 
+		class="w-16 h-16 object-contain transition-transform duration-300 group-hover:scale-110" 
+		loading="lazy"
+		decoding="async"
+	/>
 
-<section id="skills" class="py-16 bg-gray-50 dark:bg-[#121212]">
-  <div class="max-w-7xl mx-auto px-6">
-    <h2 class="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white">Skills</h2>
-		{ skills.map((skill) => <SkillCard skill={skill}/>) }
-  </div>
-</section>
+	{/* Title on hover */}
+	<div class="absolute inset-0 flex flex-col items-center justify-center bg-black/80 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs font-semibold p-2">
+		<span class="text-center">{skill.name}</span>
+		{showProficiency && skill.proficiency && (
+			<span class={`mt-1 px-2 py-0.5 rounded-full text-xs ${proficiencyColors[skill.proficiency]}`}>
+				{getProficiencyLabel(skill.proficiency)}
+			</span>
+		)}
+	</div>
+</div>
