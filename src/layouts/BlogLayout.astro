@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from "../components/Header.astro"
+import Hero from "../components/Hero.astro"
+import Footer from '../components/Footer.astro';
+import Contact from '../components/Contact.astro';
+---
+
+<BaseLayout>
+<Header />
+	<main class="max-w-7xl mx-auto min-h-screen">
+		<slot />
+	</main>
+<Contact />
+<Footer />
+</BaseLayout>

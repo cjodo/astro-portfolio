@@ -1,16 +1,28 @@
+---
+
+const { isHome } = Astro.props
+
+interface Props {
+	isHome?: boolean;
+}
+---
+
 <header
   id="site-header"
-  class="fixed top-0 left-0 w-full z-50
+	class=`
+				${ isHome ? "fixed top-0 left-0" : "" }
+				w-full z-50
          bg-transparent text-[#171717]
-         transition-colors duration-300"
+         transition-colors duration-300`
 >
   <div class="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-    <span class="font-semibold tracking-tight text-xl">[cjodo.dev]</span>
+		<a href="/"><span class="font-semibold tracking-tight text-xl">[cjodo.dev]</span></a>
 
     <nav class="flex gap-6 text-lg font-bold">
-      <a href="#projects" class="transition-colors duration-300 hover:text-[#1F4ED8]">Projects</a>
-      <a href="#about" class="transition-colors duration-300 hover:text-[#1F4ED8]">About</a>
-      <a href="#contact" class="transition-colors duration-300 hover:text-[#1F4ED8]">Contact</a>
+			<a href="/#projects" class="transition-colors duration-300 hover:text-[#1F4ED8]">Projects</a>
+			<a href="/#about" class="transition-colors duration-300 hover:text-[#1F4ED8]">About</a>
+			<a href="/#contact" class="transition-colors duration-300 hover:text-[#1F4ED8]">Contact</a>
+			<a href="/blog" class="transition-colors duration-300 hover:text-[#1F4ED8]">Blog</a>
     </nav>
   </div>
 </header>

@@ -19,42 +19,40 @@ export const projects: Project[] = [
 		title: 'convert.nvim',
 		description: 'A Neovim plugin to help with css unit conversions',
 		longDescription: 'A nvim plugin written in lua allowing for unit, size and number conversions.  Including docs and config.',
-		image: '/projects/ecommerce.jpg',
+		image: '/convert-banner.webp',
 		tags: ['Lua', 'Plugin', 'Tools', 'Nvim'],
-		demoUrl: 'https://demo.example.com',
 		githubUrl: 'https://github.com/cjodo/convert.nvim',
 		liveDemo: false,
 		year: 2024,
 		status: 'completed',
-		techStack: ['Neovim', 'Lua' ]
+		techStack: ['Neovim', 'Lua', 'Plugin' ]
 	},
 	{
 		id: 'ahas',
 		title: 'AHAS Website',
 		description: 'A charity vet website located in Edmonton. Built with a headless cms',
 		longDescription: '',
-		image: '/projects/task-app.jpg',
+		image: '/convert-banner.webp',
 		tags: ['Headless', 'Typescript', 'CMS'],
 		liveDemo: true,
-		demoUrl: 'https://tasks.example.com',
-		githubUrl: '',
+		demoUrl: 'https://ahas.ca',
 		year: 2026,
 		status: 'in-progress',
-		techStack: ['Cockpit CMS', 'TypeScript', 'Astro', 'React' ]
+		techStack: ['Cockpit CMS', 'TypeScript', 'Astro', 'React', 'Tailwind CSS' ]
 	},
 	{
 		id: 'comforts-from-home',
 		title: 'Comforts from Home',
 		description: 'A wordpress e-commerce site for hand knit local goods',
 		longDescription: '',
-		image: '/projects/weather.jpg',
+		image: '/convert-banner.webp',
 		liveDemo: true,
-		tags: ['JavaScript', 'API Integration', 'Charts'],
-		demoUrl: 'https://weather.example.com',
+		tags: [ 'CMS' , 'Wordpress' ],
+		demoUrl: 'https://comfortsfromhome.shop',
 		githubUrl: '',
 		year: 2023,
 		status: 'in-progress',
-		techStack: ['JavaScript', 'Chart.js', 'OpenWeather API', 'Geolocation API']
+		techStack: [ 'Wordpress' ]
 	},
 ]
 
