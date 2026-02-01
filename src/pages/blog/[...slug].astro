@@ -1,20 +1,33 @@
 ---
-const { slug } = Astro.params
+const { slug } = Astro.params 
 import BlogLayout from "../../layouts/BlogLayout.astro"
-import { getPostBySlug, devPosts } from "@/data/blog"
+import { db, BlogPosts, eq } from "astro:db";
+import { Markdown } from "astro-remote";
+
+import Title from "@/components/Markdown/Title.astro"
 
 export const prerender = false
 
-const post = getPostBySlug(devPosts, slug as string);
-
-if (!post) {
+const postNotFound = () => {
 	return new Response(null, {
 		status: 404,
-		statusText: "Not found"
+		statusText: "Post not found"
 	})
 }
+
+if(!slug) {
+	return postNotFound();
+}
+
+const post = await db.select().from(BlogPosts).where(eq(BlogPosts.slug, slug))
+
+if(!post) {
+	return postNotFound();
+}
+
+console.log(post)
 ---
 
 <BlogLayout>
-	{ slug }
+	<Markdown content={ post[0].content } components={{ h1: Title }} />
 </BlogLayout>

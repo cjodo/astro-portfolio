@@ -1,0 +1,261 @@
+---
+import { db, BlogPosts, Tags, PostTags, eq, and } from 'astro:db';
+
+export interface Props {
+  selectedTag?: string;
+  selectedCategory?: string;
+}
+
+const { selectedTag, selectedCategory } = Astro.props;
+
+// Get all posts with their tags
+const posts = await db.select()
+  .from(BlogPosts)
+  .where(eq(BlogPosts.published, true))
+  .orderBy(BlogPosts.date);
+
+// Get all tags
+const allTagsDb = await db.select().from(Tags);
+
+// Filter posts based on selected tag
+const filteredPosts = [];
+for (const post of posts) {
+  const postTags = await db.select()
+    .from(PostTags)
+    .where(eq(PostTags.postId, post.id));
+  
+  const tagIds = postTags.map(pt => pt.tagId);
+  const tags = allTagsDb.filter(tag => tagIds.includes(tag.id));
+  
+  const tagMatch = !selectedTag || tagIds.includes(selectedTag);
+  
+  if (tagMatch) {
+    filteredPosts.push({
+      ...post,
+      tags: tags.map(tag => tag.name),
+    });
+  }
+}
+
+// Get all unique tag names for filter
+const allTags = allTagsDb.map(tag => tag.name);
+const allCategories = ['Tutorial', 'CSS', 'Web Development']; // Can be enhanced later
+
+// Format date
+const formatDate = (date: Date) => {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
+---
+
+<section class="blog-section">
+  <header class="blog-header">
+    <h1 class="blog-title">Blog</h1>
+    <p class="blog-subtitle">Thoughts, tutorials, and insights</p>
+  </header>
+
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-group">
+      <label for="category-filter" class="filter-label">Category:</label>
+      <select id="category-filter" class="filter-select">
+        <option value="">All Categories</option>
+        {allCategories.map(category => (
+          <option value={category} selected={selectedCategory === category}>
+            {category}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="tag-filter" class="filter-label">Tag:</label>
+      <select id="tag-filter" class="filter-select">
+        <option value="">All Tags</option>
+        {allTags.map(tag => (
+          <option value={tag} selected={selectedTag === tag}>
+            {tag}
+          </option>
+        ))}
+      </select>
+    </div>
+  </div>
+
+  <!-- Posts Grid -->
+  <div class="posts-grid">
+    {filteredPosts.length > 0 ? (
+      filteredPosts.map((post) => (
+        <article class="post-card">
+          <div class="post-card-content">
+            <div class="post-meta">
+              <time datetime={post.date.toISOString()} class="post-date">
+                {formatDate(post.date)}
+              </time>
+              <span class="post-read-time">{post.readTime} min read</span>
+            </div>
+            
+            <h2 class="post-title">
+              <a href={`/blog/${post.slug}`} class="post-link">
+                {post.title}
+              </a>
+            </h2>
+            
+            <p class="post-excerpt">{post.excerpt}</p>
+            
+            <div class="post-footer">
+              <div class="post-tags">
+                {post.tags.map(tag => (
+                  <span class="post-tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </article>
+      ))
+    ) : (
+      <div class="no-posts">
+        <p>No posts found matching your filters.</p>
+      </div>
+    )}
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const categoryFilter = document.getElementById('category-filter') as HTMLSelectElement;
+    const tagFilter = document.getElementById('tag-filter') as HTMLSelectElement;
+    
+    const updateFilters = () => {
+      const category = categoryFilter.value;
+      const tag = tagFilter.value;
+      
+      const params = new URLSearchParams();
+      if (category) params.set('category', category);
+      if (tag) params.set('tag', tag);
+      
+      const newUrl = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`;
+      window.history.replaceState({}, '', newUrl);
+      
+      // Trigger a page reload to apply filters
+      window.location.reload();
+    };
+    
+    categoryFilter.addEventListener('change', updateFilters);
+    tagFilter.addEventListener('change', updateFilters);
+  });
+</script>
+
+<style>
+  .blog-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .blog-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .blog-title {
+    @apply text-4xl md:text-5xl font-bold mb-2 dark:text-white;
+  }
+
+  .blog-subtitle {
+    @apply text-lg text-gray-600 dark:text-gray-300;
+  }
+
+  .filters {
+    @apply flex flex-wrap gap-4 mb-8 justify-center;
+  }
+
+  .filter-group {
+    @apply flex flex-col;
+  }
+
+  .filter-label {
+    @apply text-sm font-medium mb-1 dark:text-gray-200;
+  }
+
+  .filter-select {
+    @apply px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
+           bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+           focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  }
+
+  .posts-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  .post-card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg 
+           transition-all duration-300 border border-gray-200 dark:border-gray-700
+           overflow-hidden;
+  }
+
+  .post-card-content {
+    @apply p-6;
+  }
+
+  .post-meta {
+    @apply flex items-center justify-between mb-3 text-sm;
+  }
+
+  .post-date {
+    @apply text-gray-500 dark:text-gray-400;
+  }
+
+  .post-read-time {
+    @apply text-gray-400 dark:text-gray-500;
+  }
+
+  .post-title {
+    @apply text-xl font-bold mb-2;
+  }
+
+  .post-link {
+    @apply text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 
+           transition-colors duration-200;
+  }
+
+  .post-excerpt {
+    @apply text-gray-600 dark:text-gray-300 mb-4 line-clamp-3;
+  }
+
+  .post-footer {
+    @apply flex items-center justify-between flex-wrap gap-2;
+  }
+
+  .post-category {
+    @apply px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 
+           text-xs font-medium rounded;
+  }
+
+  .post-tags {
+    @apply flex flex-wrap gap-1;
+  }
+
+  .post-tag {
+    @apply px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 
+           text-xs rounded;
+  }
+
+  .no-posts {
+    @apply col-span-full text-center py-12;
+  }
+
+  .no-posts p {
+    @apply text-gray-500 dark:text-gray-400 text-lg;
+  }
+
+  /* Line clamp utility */
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
