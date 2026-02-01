@@ -6,7 +6,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build --remote
+RUN npm run build
 
 FROM node:lts AS runtime
 WORKDIR /app
