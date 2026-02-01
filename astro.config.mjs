@@ -9,13 +9,15 @@ import db from '@astrojs/db';
 
 // https://astro.build/config
 export default defineConfig({
-  vite: {
-    plugins: [tailwindcss()]
-  },
+	vite: {
+		plugins: [tailwindcss()]
+	},
 
-  adapter: node({
-    mode: 'standalone'
-  }),
+	adapter: node({
+		mode: 'standalone'
+	}),
 
-  integrations: [db()]
+	integrations: [db()],
+
+	server: { port: 8080 }
 });
