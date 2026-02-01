@@ -7,7 +7,8 @@
     "build": "astro build --remote",
     "preview": "astro preview",
     "sync": "astro db push --remote",
-    "astro": "astro"
+    "astro": "astro",
+		"start": "npx serve dist/"
   },
   "dependencies": {
     "@astrojs/db": "^0.19.0",
