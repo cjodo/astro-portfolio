@@ -12,5 +12,8 @@ export default defineConfig({
   integrations: [db(), node({ mode: 'standalone' })],
   output: 'server',
   adapter: node({ mode: 'standalone' }),
+	server: {
+		port: 8080
+	}
 });
 

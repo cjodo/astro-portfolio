@@ -1,6 +1,7 @@
 {
   "build": {
-    "builder": "NIXPACKS"
+    "builder": "RAILPACk",
+		"buildCommand": "npm run build --remote"
   },
   "deploy": {
     "startCommand": "node dist/server/entry.mjs",
