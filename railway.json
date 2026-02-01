@@ -4,6 +4,6 @@
 		"buildCommand": "npm run build --remote"
   },
   "deploy": {
-    "startCommand": "node dist/server/entry.mjs",
+    "startCommand": "node dist/server/entry.mjs"
   }
 }
