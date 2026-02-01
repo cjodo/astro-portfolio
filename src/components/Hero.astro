@@ -76,28 +76,3 @@ import DownArrow from './icons/DownArrow.astro';
 		</div>
 	</div>
 </a>
-
-<script>
-const cursor = document.getElementById('cursor-glow');
-const hero = document.getElementById('hero');
-
-if (cursor && hero) {
-	// Show subtle glow when entering the hero
-	hero.addEventListener('mouseenter', () => {
-		cursor.style.opacity = '1';
-	});
-
-	// Hide the glow when leaving the hero
-	hero.addEventListener('mouseleave', () => {
-		cursor.style.opacity = '0';
-	});
-
-	// Move the glow smoothly with the mouse
-	hero.addEventListener('mousemove', e => {
-		const x = e.clientX;
-		const y = e.clientY;
-		cursor.style.transform = `translate(${x}px, ${y}px)`;
-	});
-}
-</script>
-
