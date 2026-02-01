@@ -1,11 +1,9 @@
 {
   "build": {
-    "builder": "RAILPACk",
+    "builder": "RAILPACK",
 		"buildCommand": "npm run build --remote"
   },
   "deploy": {
     "startCommand": "node dist/server/entry.mjs",
-    "healthcheckPath": "/",
-    "healthcheckTimeout": 100
   }
 }
