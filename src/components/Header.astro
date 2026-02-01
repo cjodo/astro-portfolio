@@ -1,29 +1,37 @@
 ---
+import ThemePicker from "@/components/ThemePicker.astro"
 
-const { isHome } = Astro.props
+const { isHome, themePicker } = Astro.props
 
 interface Props {
 	isHome?: boolean;
+	themePicker: boolean
 }
 ---
 
 <header
-  id="site-header"
+	id="site-header"
 	class=`
-				${ isHome ? "fixed top-0 left-0" : "" }
-				w-full z-50
-         bg-transparent text-[#171717]
-         transition-colors duration-300`
+${ isHome ? "fixed top-0 left-0" : "" }
+w-full z-50
+backdrop-blur-md text-secondary
+bg-secondary
+transition-colors duration-300`
 >
-  <div class="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+	<div class="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
 		<a href="/"><span class="font-semibold tracking-tight text-xl">[cjodo.dev]</span></a>
 
-    <nav class="flex gap-6 text-lg font-bold">
-			<a href="/#projects" class="transition-colors duration-300 hover:text-[#1F4ED8]">Projects</a>
-			<a href="/#about" class="transition-colors duration-300 hover:text-[#1F4ED8]">About</a>
-			<a href="/#contact" class="transition-colors duration-300 hover:text-[#1F4ED8]">Contact</a>
-			<a href="/blog" class="transition-colors duration-300 hover:text-[#1F4ED8]">Blog</a>
-    </nav>
-  </div>
+		<div class="flex align-vertical justify-center gap-6 items-center">
+			<nav class="flex gap-6 text-lg font-bold">
+				<a href="/#projects" class="transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400">Projects</a>
+				<a href="/#about" class="transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400">About</a>
+				<a href="/#contact" class="transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400">Contact</a>
+				<a href="/blog" class="transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400">Blog</a>
+			</nav>
+			{ themePicker && (
+			<ThemePicker />
+			) }
+		</div>
+	</div>
 </header>
 
