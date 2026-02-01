@@ -7,11 +7,11 @@ if (header && hero) {
       if (entry.isIntersecting) {
         // Over hero (transparent header)
         header.classList.remove("bg-white", "shadow-sm");
-        header.classList.add("bg-transparent");
+        header.classList.add("backdrop-blur-sm");
         header.style.color = "#171717"; // Dark ink
       } else {
         // Past hero (solid white header)
-        header.classList.remove("bg-transparent");
+        header.classList.remove("backdrop-blur-sm");
         header.classList.add("bg-white", "shadow-sm");
         header.style.color = "#1F4ED8"; // Optional: blue accent text
       }
