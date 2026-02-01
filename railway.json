@@ -1,6 +1,10 @@
 {
   "build": {
-    "builder": "NIXPACKS"
+    "builder": "NIXPACKS",
+    "buildCommand": "npm run build",
+    "nixpacks": {
+      "nodejs": "20"
+    }
   },
   "deploy": {
     "startCommand": "node dist/server/entry.mjs",
