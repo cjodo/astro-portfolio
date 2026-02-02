@@ -7,8 +7,6 @@ if (Astro.request.method === 'POST') {
 	const formData = await Astro.request.formData();
 	const username = formData.get('username');
 	const password = formData.get('password');
-	console.log({ username, password })
-
 	// Simple authentication - in production, use proper hashing
 	if (username === import.meta.env.ADMIN_USER && password === import.meta.env.ADMIN_PASSWORD) {
 		const response = new Response(null, {

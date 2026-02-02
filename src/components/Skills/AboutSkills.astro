@@ -118,9 +118,6 @@ const displaySkills = skills;
           
           this.compact = showMoreBtn !== null;
           this.allSkills = Array.from(document.querySelectorAll('.skill-item'));
-          
-          console.log('Found', this.allSkills.length, 'skill items');
-          
           // Set initial state - show all skills by default
           // For compact view, only show first 12 initially
           this.allSkills.forEach((item, index) => {

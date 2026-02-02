@@ -10,13 +10,10 @@ export const onRequest = defineMiddleware((context, next) => {
 	
 	// Check if user is authenticated
 	const cookies = request.headers.get('cookie') || '';
-	console.log('Middleware - Cookies:', cookies);
 	const isAuthenticated = cookies.includes('auth=true');
-	console.log('Middleware - Is Authenticated:', isAuthenticated);
 	
 	// Redirect to login if not authenticated and trying to access admin routes
 	if (url.pathname.startsWith('/admin') && !isAuthenticated) {
-		console.log('Middleware - Redirecting to login');
 		return Response.redirect(new URL('/admin/login', url), 302);
 	}
 	

@@ -5,6 +5,8 @@ export const getPost = async (ref: string) => {
 		cache: "force-cache"
 	});
 
+	console.log({ res })
+
 	if (!res.ok) throw new Error("Content not found")
 	return res.text()
 }
