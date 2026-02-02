@@ -2,7 +2,7 @@ const POST_API = import.meta.env.POST_API
 
 export const getPost = async (ref: string) => {
 	const res = await fetch(`${POST_API}/post/${ref}`, {
-		cache: "force-cache"
+		cache: "no-store"
 	});
 
 	console.log({ res })
