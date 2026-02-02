@@ -88,9 +88,9 @@ const formatDate = (date: Date) => {
   <div class="posts-grid">
     {filteredPosts.length > 0 ? (
       filteredPosts.map((post) => (
-        <article class="post-card">
-          <div class="post-card-content">
-            <div class="post-meta">
+        <article class="">
+          <div class="">
+            <div class="">
               <time datetime={post.date.toISOString()} class="post-date">
                 {formatDate(post.date)}
               </time>
@@ -103,7 +103,7 @@ const formatDate = (date: Date) => {
               </a>
             </h2>
             
-            <p class="post-excerpt">{post.excerpt}</p>
+            <p class="">{post.excerpt}</p>
             
             <div class="post-footer">
               <div class="post-tags">
@@ -147,115 +147,3 @@ const formatDate = (date: Date) => {
     tagFilter.addEventListener('change', updateFilters);
   });
 </script>
-
-<style>
-  .blog-section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
-
-  .blog-header {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-
-  .blog-title {
-    @apply text-4xl md:text-5xl font-bold mb-2 dark:text-white;
-  }
-
-  .blog-subtitle {
-    @apply text-lg text-gray-600 dark:text-gray-300;
-  }
-
-  .filters {
-    @apply flex flex-wrap gap-4 mb-8 justify-center;
-  }
-
-  .filter-group {
-    @apply flex flex-col;
-  }
-
-  .filter-label {
-    @apply text-sm font-medium mb-1 dark:text-gray-200;
-  }
-
-  .filter-select {
-    @apply px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
-           bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
-           focus:ring-2 focus:ring-blue-500 focus:border-transparent;
-  }
-
-  .posts-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
-  }
-
-  .post-card {
-    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg 
-           transition-all duration-300 border border-gray-200 dark:border-gray-700
-           overflow-hidden;
-  }
-
-  .post-card-content {
-    @apply p-6;
-  }
-
-  .post-meta {
-    @apply flex items-center justify-between mb-3 text-sm;
-  }
-
-  .post-date {
-    @apply text-gray-500 dark:text-gray-400;
-  }
-
-  .post-read-time {
-    @apply text-gray-400 dark:text-gray-500;
-  }
-
-  .post-title {
-    @apply text-xl font-bold mb-2;
-  }
-
-  .post-link {
-    @apply text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 
-           transition-colors duration-200;
-  }
-
-  .post-excerpt {
-    @apply text-gray-600 dark:text-gray-300 mb-4 line-clamp-3;
-  }
-
-  .post-footer {
-    @apply flex items-center justify-between flex-wrap gap-2;
-  }
-
-  .post-category {
-    @apply px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 
-           text-xs font-medium rounded;
-  }
-
-  .post-tags {
-    @apply flex flex-wrap gap-1;
-  }
-
-  .post-tag {
-    @apply px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 
-           text-xs rounded;
-  }
-
-  .no-posts {
-    @apply col-span-full text-center py-12;
-  }
-
-  .no-posts p {
-    @apply text-gray-500 dark:text-gray-400 text-lg;
-  }
-
-  /* Line clamp utility */
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-</style>
