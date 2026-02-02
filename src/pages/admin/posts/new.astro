@@ -8,7 +8,7 @@ if (Astro.request.method === 'POST') {
 	const title = formData.get('title')?.toString() || '';
 	const slug = formData.get('slug')?.toString() || '';
 	const excerpt = formData.get('excerpt')?.toString() || '';
-	const content = formData.get('content')?.toString() || '';
+	const contentRef = formData.get('contentRef')?.toString() || '';
 	const readTime = parseInt(formData.get('readTime')?.toString() || '1');
 	const published = formData.get('published') === 'on';
 	
@@ -19,7 +19,7 @@ if (Astro.request.method === 'POST') {
 			slug,
 			date: new Date(),
 			excerpt,
-			content,
+			contentRef,
 			readTime,
 			published
 		});

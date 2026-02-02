@@ -2,11 +2,8 @@
 const { slug } = Astro.params 
 import BlogLayout from "../../layouts/BlogLayout.astro"
 import { db, BlogPosts, eq } from "astro:db";
-import { Markdown } from "astro-remote";
 import Breadcrumb from "@/components/Breadcrumb.astro";
-
-import Title from "@/components/Markdown/Title.astro"
-import { getPost } from "@/lib/posts";
+import MarkdownRenderer from "@/components/MarkdownRenderer.astro";
 
 export const prerender = false
 
@@ -23,21 +20,11 @@ if(!slug) {
 
 const post = await db.select().from(BlogPosts).where(eq(BlogPosts.slug, slug))
 
-
 if(post.length === 0 || !post[0].published) {
 	return postNotFound();
 }
 
 const postData = post[0];
-console.log(postData)
-
-let content = postData.content
-
-if(postData.contentRef) {
-	const ref = postData.contentRef
-	console.log(ref)
-	content = await getPost(ref)
-}
 ---
 
 <BlogLayout>
@@ -57,8 +44,8 @@ if(postData.contentRef) {
 			</div>
 		</header>
 		
-		<div class="prose prose-lg max-w-none">
-			<Markdown content={content} components={{ h1: Title }} />
+		<div class="prose-container">
+			<MarkdownRenderer content={postData.content} />
 		</div>
 	</article>
 </BlogLayout>
