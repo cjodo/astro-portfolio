@@ -1,13 +1,20 @@
-const POST_API = import.meta.env.POST_API
+
+const POST_API = import.meta.env.POST_API;
+
+if (!POST_API) {
+  throw new Error("POST_API is not defined");
+}
 
 export const getPost = async (ref: string) => {
-	console.log(POST_API)
-	const res = await fetch(`${POST_API}/post/${ref}`, {
-		cache: "no-store"
-	});
+  const res = await fetch(`${POST_API}/post/${ref}`, {
+    cache: "no-store",
+  });
 
-	console.log({ res })
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Failed: ${res.status} ${text}`);
+  }
 
-	if (!res.ok) throw new Error("Content not found")
-	return res.text()
-}
+  return res.text();
+};
+

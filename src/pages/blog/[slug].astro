@@ -31,7 +31,9 @@ const postData = post[0];
 let content = postData.content
 
 if(postData.contentRef) {
-	content = await getPost(postData.contentRef)
+	content = await getPost(postData.contentRef);
+	console.log(content);
+	
 }
 
 const readTime = calculateReadingTime(content);
