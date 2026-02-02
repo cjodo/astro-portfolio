@@ -44,16 +44,6 @@ const techCount = [...new Set(projects.flatMap(p => p.techStack))].length;
 			))}
 		</div>
 
-		<!-- View All Button (only show on featured view) -->
-		<div class="text-center mt-12">
-			<a 
-				href="#all-projects" 
-				class="inline-flex items-center gap-2 px-8 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors duration-200"
-			>
-				View All Projects ({projects.length})
-			</a>
-		</div>
-
 		<!-- Stats Section -->
 		<div class="mt-20 pt-12 border-t border-gray-200">
 			<div class="grid grid-cols-2 gap-8 text-center">
