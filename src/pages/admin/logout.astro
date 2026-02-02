@@ -1,0 +1,9 @@
+---
+export const prerender = false;
+
+if (Astro.request.method === 'POST') {
+	Astro.response.headers.set('Set-Cookie', 'auth=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0');
+	return Astro.redirect('/admin/login');
+}
+
+return Astro.redirect('/admin/login');

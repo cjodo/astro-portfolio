@@ -1,0 +1,131 @@
+---
+import AdminLayout from "@/layouts/AdminLayout.astro";
+
+export const prerender = false;
+
+if (Astro.request.method === 'POST') {
+	const formData = await Astro.request.formData();
+	const title = formData.get('title')?.toString() || '';
+	const slug = formData.get('slug')?.toString() || '';
+	const excerpt = formData.get('excerpt')?.toString() || '';
+	const content = formData.get('content')?.toString() || '';
+	const readTime = parseInt(formData.get('readTime')?.toString() || '1');
+	const published = formData.get('published') === 'on';
+	
+	try {
+		const { db, BlogPosts } = await import('astro:db');
+		await db.insert(BlogPosts).values({
+			title,
+			slug,
+			date: new Date(),
+			excerpt,
+			content,
+			readTime,
+			published
+		});
+		
+		return Astro.redirect('/admin/posts');
+	} catch (error) {
+		console.error('Error creating post:', error);
+	}
+}
+---
+
+<AdminLayout title="New Post">
+	<form method="POST" class="space-y-6">
+		<div>
+			<label for="title" class="block text-sm font-medium text-white">
+				Title
+			</label>
+			<input
+				type="text"
+				id="title"
+				name="title"
+				required
+				class="bg-white mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+			/>
+		</div>
+
+		<div>
+			<label for="slug" class="block text-sm font-medium text-white">
+				Slug (URL)
+			</label>
+			<input
+				type="text"
+				id="slug"
+				name="slug"
+				required
+				pattern="[a-z0-9-]+"
+				class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white"
+				placeholder="example-post-title"
+			/>
+		</div>
+
+		<div>
+			<label for="excerpt" class="block text-sm font-medium text-white">
+				Excerpt
+			</label>
+			<textarea
+				id="excerpt"
+				name="excerpt"
+				rows="3"
+				class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white"
+			></textarea>
+		</div>
+
+		<div>
+			<label for="content" class="block text-sm font-medium text-white">
+				Content Ref
+			</label>
+			<input
+				type="text"
+				id="contentRef"
+				name="contentRef"
+				required
+				pattern="[a-z0-9-]+"
+				class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white"
+				placeholder="posts/example.md"
+			/>
+		</div>
+
+		<div>
+			<label for="readTime" class="block text-sm font-medium text-white">
+				Read Time (minutes)
+			</label>
+			<input
+				type="number"
+				id="readTime"
+				name="readTime"
+				min="1"
+				value="5"
+				class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white"
+			/>
+		</div>
+
+		<div>
+			<label class="flex items-center">
+				<input
+					type="checkbox"
+					name="published"
+					class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded bg-white"
+				/>
+				<span class="ml-2 text-sm text-white">Publish immediately</span>
+			</label>
+		</div>
+
+		<div class="flex space-x-4">
+			<button
+				type="submit"
+				class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md"
+			>
+				Create Post
+			</button>
+			<a
+				href="/admin/posts"
+				class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-md inline-block"
+			>
+				Cancel
+			</a>
+		</div>
+	</form>
+</AdminLayout>

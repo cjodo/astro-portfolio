@@ -1,0 +1,19 @@
+---
+import { db, BlogPosts, eq } from "astro:db";
+
+export const prerender = false;
+
+const { id } = Astro.params;
+const postId = parseInt(id as string);
+
+if (Astro.request.method === 'POST') {
+	try {
+		await db.delete(BlogPosts).where(eq(BlogPosts.id, postId));
+		return Astro.redirect('/admin/posts');
+	} catch (error) {
+		console.error('Error deleting post:', error);
+		return new Response('Failed to delete post', { status: 500 });
+	}
+}
+
+return Astro.redirect('/admin/posts');

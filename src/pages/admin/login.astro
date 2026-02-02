@@ -1,0 +1,86 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export const prerender = false;
+
+if (Astro.request.method === 'POST') {
+	const formData = await Astro.request.formData();
+	const username = formData.get('username');
+	const password = formData.get('password');
+	console.log({ username, password })
+
+	// Simple authentication - in production, use proper hashing
+	if (username === import.meta.env.ADMIN_USER && password === import.meta.env.ADMIN_PASSWORD) {
+		const response = new Response(null, {
+			status: 302,
+			headers: {
+				Location: '/admin/dashboard',
+				'Set-Cookie': 'auth=true; Path=/; HttpOnly; SameSite=Lax; Max-Age=3600'
+			}
+		});
+		return response;
+	} else {
+		return new Response('Invalid credentials', { status: 401 });
+	}
+}
+---
+
+<BaseLayout>
+<div class="min-h-screen flex items-center justify-center bg-gray-900">
+		<div class="max-w-md w-full space-y-8">
+	<div class="text-center">
+			<div class="mx-auto w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6">
+				<svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+				</svg>
+			</div>
+			<h2 class="text-3xl font-bold text-white">
+				Curtis Login
+			</h2>
+			<p class="mt-2 text-sm text-gray-400">
+				Sign in to manage the blog
+			</p>
+		</div>
+
+	<form method="POST" class="mt-8 space-y-6">
+			<div class="space-y-4">
+				<div>
+					<label for="username" class="sr-only">Username</label>
+					<input
+						id="username"
+						name="username"
+						type="text"
+						required
+						class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-800 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm"
+						placeholder="Username"
+					/>
+				</div>
+				<div>
+					<label for="password" class="sr-only">Password</label>
+					<input
+						id="password"
+						name="password"
+						type="password"
+						required
+						class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-800 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm"
+						placeholder="Password"
+					/>
+				</div>
+			</div>
+
+			<div>
+				<button
+					type="submit"
+					class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-500 transition-all duration-200"
+				>
+					Sign in
+				</button>
+			</div>
+
+				<p class="mt-2 text-center text-xs text-gray-500">
+					Only Curtis can login, sorry.
+				</p>
+		</form>
+	</div>
+</div>
+</BaseLayout>

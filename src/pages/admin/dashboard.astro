@@ -1,0 +1,70 @@
+---
+import AdminLayout from "@/layouts/AdminLayout.astro";
+import { db, BlogPosts } from "astro:db";
+import { eq } from "astro:db";
+
+const posts = await db.select().from(BlogPosts);
+const totalPosts = posts.length;
+const publishedPosts = posts.filter(post => post.published).length;
+const draftPosts = posts.filter(post => !post.published).length;
+---
+
+<AdminLayout title="Dashboard">
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+		<div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+			<h3 class="text-lg font-semibold text-gray-100">Total Posts</h3>
+			<p class="text-3xl font-bold text-blue-400 mt-2">{totalPosts}</p>
+		</div>
+		<div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+			<h3 class="text-lg font-semibold text-gray-100">Published</h3>
+			<p class="text-3xl font-bold text-green-400 mt-2">{publishedPosts}</p>
+		</div>
+		<div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+			<h3 class="text-lg font-semibold text-gray-100">Drafts</h3>
+			<p class="text-3xl font-bold text-gray-400 mt-2">{draftPosts}</p>
+		</div>
+	</div>
+
+	<div class="bg-gray-800 rounded-xl border border-gray-700">
+		<div class="px-6 py-4 border-b border-gray-700">
+			<h3 class="text-lg font-medium text-gray-100">Recent Posts</h3>
+		</div>
+		<div class="divide-y divide-gray-700">
+			{posts.slice(0, 5).map((post) => (
+				<div class="px-6 py-4 flex items-center justify-between">
+					<div>
+						<h4 class="text-sm font-medium text-gray-100">{post.title}</h4>
+						<p class="text-sm text-gray-400">
+							{post.date.toLocaleDateString()} • {post.readTime} min read
+						</p>
+					</div>
+					<div class="flex items-center space-x-2">
+						{post.published ? (
+							<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-900/30 text-green-400 border border-green-800">
+								Published
+							</span>
+						) : (
+							<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-700 text-gray-300 border border-gray-600">
+								Draft
+							</span>
+						)}
+						<a
+							href={`/admin/posts/${post.id}/edit`}
+							class="text-blue-400 hover:text-blue-300 text-sm"
+						>
+							Edit
+						</a>
+					</div>
+				</div>
+			))}
+		</div>
+		<div class="px-6 py-4 border-t border-gray-700">
+			<a
+				href="/admin/posts"
+				class="text-blue-400 hover:text-blue-300 font-medium"
+			>
+				View all posts →
+			</a>
+		</div>
+	</div>
+</AdminLayout>

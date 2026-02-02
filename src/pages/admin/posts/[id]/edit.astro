@@ -1,0 +1,149 @@
+---
+import AdminLayout from "@/layouts/AdminLayout.astro";
+import { db, BlogPosts, eq } from "astro:db";
+import { AstroError } from 'astro/errors';
+
+const { id } = Astro.params;
+const postId = parseInt(id as string);
+
+if (Astro.request.method === 'POST') {
+	const formData = await Astro.request.formData();
+	const title = formData.get('title')?.toString() || '';
+	const slug = formData.get('slug')?.toString() || '';
+	const excerpt = formData.get('excerpt')?.toString() || '';
+	const contentRef = formData.get('contentRef')?.toString() || '';
+	const readTime = parseInt(formData.get('readTime')?.toString() || '1');
+	const published = formData.get('published') === 'on';
+	
+	try {
+		await db.update(BlogPosts)
+			.set({
+				title,
+				slug,
+				excerpt,
+				contentRef,
+				readTime,
+				published
+			})
+			.where(eq(BlogPosts.id, postId));
+		
+		return Astro.redirect('/admin/posts');
+	} catch (error) {
+		console.error('Error updating post:', error);
+		throw new AstroError('Failed to update post');
+	}
+}
+
+const posts = await db.select().from(BlogPosts).where(eq(BlogPosts.id, postId));
+const post = posts[0];
+
+if (!post) {
+	throw new AstroError('Post not found');
+}
+---
+
+<AdminLayout title="Edit Post">
+	<form method="POST" class="space-y-6">
+		<div>
+			<label for="title" class="block text-sm font-medium text-gray-700">
+				Title
+			</label>
+			<input
+				type="text"
+				id="title"
+				name="title"
+				value={post.title}
+				required
+				class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white"
+			/>
+		</div>
+
+		<div>
+			<label for="slug" class="block text-sm font-medium text-gray-700">
+				Slug (URL)
+			</label>
+			<input
+				type="text"
+				id="slug"
+				name="slug"
+				value={post.slug}
+				required
+				pattern="[a-z0-9-]+"
+				class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white"
+			/>
+		</div>
+
+		<div>
+			<label for="excerpt" class="block text-sm font-medium text-gray-700">
+				Excerpt
+			</label>
+			<textarea
+				id="excerpt"
+				name="excerpt"
+				rows="3"
+				class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white"
+			>{post.excerpt}</textarea>
+		</div>
+
+		<div>
+			<label for="content" class="block text-sm font-medium text-gray-700">
+				Content Ref (github path)
+			</label>
+			<textarea
+				id="content"
+				name="content"
+				rows="1"
+				required
+				class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm font-mono bg-white"
+			>{post.contentRef}</textarea>
+		</div>
+
+		<div>
+			<label for="readTime" class="block text-sm font-medium text-gray-700">
+				Read Time (minutes)
+			</label>
+			<input
+				type="number"
+				id="readTime"
+				name="readTime"
+				min="1"
+				value={post.readTime}
+				class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white"
+			/>
+		</div>
+
+		<div>
+			<label class="flex items-center">
+				<input
+					type="checkbox"
+					name="published"
+					checked={post.published}
+					class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+				/>
+				<span class="ml-2 text-sm text-gray-700">Published</span>
+			</label>
+		</div>
+
+		<div class="flex space-x-4">
+			<button
+				type="submit"
+				class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md"
+			>
+				Update Post
+			</button>
+			<a
+				href="/admin/posts"
+				class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-md inline-block"
+			>
+				Cancel
+			</a>
+			<a
+				href={`/blog/${post.slug}`}
+				target="_blank"
+				class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md inline-block"
+			>
+				View Post
+			</a>
+		</div>
+	</form>
+</AdminLayout>
