@@ -1,0 +1,216 @@
+/**
+ * 	Rosé Pine
+ *	Originally created by: Markus Persson
+ * 	Ported to prism theme by: Curtis O'Donnell
+ */
+
+/* Theme variables
+:root {
+--base: #191724;
+--surface: #1f1d2e;
+--muted: #6e6a86;
+--text: #e0def4;
+--love: #eb6f92;
+--gold: #f6c177;
+--rose: #ebbcba;
+--pine: #31748f;
+--foam: #9ccfd8;
+--iris: #c4a7e7;
+}
+ */
+pre[class*=language-].line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}pre[class*=language-].line-numbers>code{position:relative;white-space:inherit}.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:0;font-size:100%;left:-3.8em;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.line-numbers-rows>span{display:block;counter-increment:linenumber}.line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}
+
+/* Set the main properties of the code, code blocks, and inline code */
+code[class*="language-"],
+pre[class*="language-"] {
+	background: #1f1d2e;
+	color: #e0def4;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	font-size: 0.9rem;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	line-height: 1.5;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+code[class*="language-"]::-moz-selection,
+code[class*="language-"] ::-moz-selection,
+pre[class*="language-"]::-moz-selection,
+pre[class*="language-"] ::-moz-selection {
+	background: #31748f;
+	color: #e0def4;
+}
+
+code[class*="language-"]::selection,
+code[class*="language-"] ::selection,
+pre[class*="language-"]::selection,
+pre[class*="language-"] ::selection {
+	background: #31748f;
+	color: #e0def4;
+}
+
+/* Properties specific to code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: 0.5em 0;
+	overflow: auto;
+	border-radius: 8px;
+}
+
+/* Properties specific to inline code */
+:not(pre) > code[class*="language-"] {
+	padding: 0.1em;
+	border-radius: 4px;
+	white-space: normal;
+	background: #1f1d2e;
+	color: #9ccfd8;
+}
+
+/* Line numbers */
+.line-numbers .line-numbers-rows > span:before {
+	color: #6e6a86;
+}
+
+/* Token styles */
+.token.comment {
+	color: #6e6a86;
+}
+
+.token.prolog {
+	color: #6e6a86;
+}
+
+.token.cdata {
+	color: #6e6a86;
+}
+
+.token.doctype {
+	color: #6e6a86;
+}
+
+.token.punctuation {
+	color: #e0def4;
+}
+
+.token.entity {
+	cursor: help;
+	color: #ebbcba;
+}
+
+.token.attr-name {
+	color: #f6c177;
+}
+
+.token.class-name {
+	color: #c4a7e7;
+}
+
+.token.boolean {
+	color: #eb6f92;
+}
+
+.token.constant {
+	color: #eb6f92;
+}
+
+.token.number {
+	color: #eb6f92;
+}
+
+.token.atrule {
+	color: #31748f;
+}
+
+.token.keyword {
+	color: #31748f;
+}
+
+.token.property {
+	color: #eb6f92;
+}
+
+.token.tag {
+	color: #eb6f92;
+}
+
+.token.symbol {
+	color: #eb6f92;
+}
+
+.token.deleted {
+	color: #eb6f92;
+}
+
+.token.important {
+	color: #eb6f92;
+}
+
+.token.selector {
+	color: #f6c177;
+}
+
+.token.string {
+	color: #f6c177;
+}
+
+.token.char {
+	color: #f6c177;
+}
+
+.token.builtin {
+	color: #f6c177;
+}
+
+.token.inserted {
+	color: #f6c177;
+}
+
+.token.regex {
+	color: #9ccfd8;
+}
+
+.token.attr-value {
+	color: #9ccfd8;
+}
+
+.token.variable {
+	color: #9ccfd8;
+}
+
+.token.operator {
+	color: #ebbcba;
+}
+
+.token.function {
+	color: #c4a7e7;
+}
+
+.token.url {
+	color: #ebbcba;
+}
+
+.token.bold {
+	font-weight: bold;
+}
+
+.token.italic {
+	font-style: italic;
+}
+
+.token.namespace {
+	opacity: 0.7;
+}
+
+.language-css .token.important {
+	color: #eb6f92;
+}
+

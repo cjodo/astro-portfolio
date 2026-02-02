@@ -1,0 +1,65 @@
+@reference "tailwindcss"
+
+/* blog.css or markdown.css */
+.prose-container {
+  @apply max-w-none text-gray-800 dark:text-gray-200 leading-relaxed;
+
+  /* Headings */
+}
+.prose-container h1 {
+  @apply text-4xl font-bold mb-6 mt-8;
+}
+.prose-container h2 {
+  @apply text-3xl font-bold mb-4 mt-8 border-b border-gray-200 dark:border-gray-700 pb-2;
+}
+.prose-container h3 {
+  @apply text-2xl font-bold mb-3 mt-6;
+}
+
+/* Paragraphs */
+.prose-container p {
+  @apply mb-6 leading-relaxed;
+}
+
+/* Links */
+.prose-container a {
+  @apply text-blue-600 dark:text-blue-400 underline decoration-2 underline-offset-2 transition-colors;
+}
+.prose-container a:hover {
+  @apply text-blue-800 dark:text-blue-300;
+}
+
+/* Bold and italic */
+.prose-container strong {
+  @apply font-bold;
+}
+.prose-container em {
+  @apply italic;
+}
+
+/* Code */
+.prose-container code {
+  @apply bg-gray-100 dark:bg-gray-800 text-pink-600 dark:text-pink-400 px-1 py-0.5 rounded text-sm font-mono;
+}
+
+/* Code blocks */
+.prose-container pre {
+  @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-6 border border-gray-700;
+}
+.prose-container pre code {
+  @apply bg-transparent text-inherit p-0 font-mono text-sm;
+}
+
+/* Blockquotes */
+.prose-container blockquote {
+  @apply border-l-4 border-blue-500 dark:border-blue-400 pl-6 my-6 italic text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800/50 py-4 rounded-r;
+}
+
+/* Lists */
+.prose-container ul li {
+  @apply ml-6 mb-2 list-disc;
+}
+.prose-container ol li {
+  @apply ml-6 mb-2 list-decimal;
+}
+
