@@ -33,7 +33,7 @@ Welcome to our Astro blog! This post demonstrates Markdown content.
 - Easy to extend
 `,
 			categoryId: 'tech',
-			contentRef: "posts/test.md",
+			contentRef: "posts/bookmark-shark.md",
 			tags: ['astro', 'md'],
 			readTime: 2,
 			published: true,
