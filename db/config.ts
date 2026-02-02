@@ -10,7 +10,8 @@ const BlogPosts = defineTable({
 		date: date(), 
 		excerpt: text(),
 		content: text(),
-		readTime: column.number(),
+		readTime: number(),
+		contentRef: text({ default: "" }),
 		published: boolean(),
 	},
 });

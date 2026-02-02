@@ -19,10 +19,10 @@ export default async function seed() {
 	// 3. Seed blog posts
 	const posts = [
 		{
-			title: 'Hello World',
-			slug: 'hello-world',
+			title: 'Test',
+			slug: 'test',
 			date: new Date(),
-			excerpt: 'Your first post in Astro!',
+			excerpt: 'Test Post!',
 			content: `
 # Hello World
 
@@ -33,27 +33,9 @@ Welcome to our Astro blog! This post demonstrates Markdown content.
 - Easy to extend
 `,
 			categoryId: 'tech',
+			contentRef: "posts/test.md",
 			tags: ['astro', 'md'],
 			readTime: 2,
-			published: true,
-		},
-		{
-			title: 'Astro Tips',
-			slug: 'astro-tips',
-			date: new Date(),
-			excerpt: 'Top 5 tips for working with Astro.',
-			content: `
-# Astro Tips
-
-1. Keep components small
-2. Use Markdown for blog posts
-3. Prefetch images for faster load
-4. Use static builds when possible
-5. Explore Astro integrations
-`,
-			categoryId: 'tech',
-			tags: ['astro', 'webdev'],
-			readTime: 3,
 			published: true,
 		},
 	];
@@ -69,6 +51,7 @@ Welcome to our Astro blog! This post demonstrates Markdown content.
 				date: post.date,
 				excerpt: post.excerpt,
 				content: post.content,
+				contentRef: post.contentRef,
 				readTime: post.readTime,
 				published: post.published
 			}])
