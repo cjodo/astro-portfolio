@@ -1,41 +1,49 @@
 ---
-import BlogLayout from "@/layouts/BlogLayout.astro"
+import BlogLayout from "@/layouts/BlogLayout.astro";
 import { db, BlogPosts, eq } from "astro:db";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 
 const posts = await db.select().from(BlogPosts).where(eq(BlogPosts.published, true));
-console.log(posts)
 ---
 
 <BlogLayout>
-	<div class="max-w-4xl mx-auto px-4 py-8">
-		<Breadcrumb items={[{ name: "Blog" }]} />
-		<h1 class="text-4xl font-bold mb-8">Blog</h1>
-		
-		<div class="space-y-8">
-			{posts.map((post) => (
-				<article class="border-b pb-8">
-					<h2 class="text-2xl font-semibold mb-2">
-						<a href={`/blog/${post.slug}`} class="hover:text-blue-600 transition-colors">
-							{post.title}
-						</a>
-					</h2>
-					<p class="text-gray-600 text-sm mb-4">
-						{post.date.toLocaleDateString()} • {post.readTime} min read
-					</p>
-					<p class="text-primary mb-4">{post.excerpt}</p>
-					<a 
-						href={`/blog/${post.slug}`} 
-						class="text-blue-600 hover:text-blue-800 font-medium"
-					>
-						Read more →
-					</a>
-				</article>
-			))}
-		</div>
-		
-		{posts.length === 0 && (
-			<p class="text-gray-600 text-center py-8">No blog posts found.</p>
-		)}
-	</div>
+  <div class="max-w-5xl mx-auto px-4 py-12">
+    <Breadcrumb items={[{ name: "Blog" }]} />
+
+    <h1 class="text-5xl font-extrabold mb-12 text-center md:text-left">Blog</h1>
+
+    {posts.length > 0 ? (
+      <div class="grid md:grid-cols-2 gap-8">
+        {posts.map((post) => (
+				<article class="bg-primary shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 flex flex-col justify-between">
+            <div>
+              <h2 class="text-2xl font-semibold mb-3">
+                <a href={`/blog/${post.slug}`} class="hover:text-blue-600 transition-colors">
+                  {post.title}
+                </a>
+              </h2>
+
+              <div class="flex items-center text-sm text-gray-500 mb-4 space-x-4">
+                <span>{post.date.toLocaleDateString()}</span>
+                <span>•</span>
+                <span>{post.readTime} min read</span>
+              </div>
+
+              <p class="text-primary mb-4">{post.excerpt}</p>
+            </div>
+
+            <a
+              href={`/blog/${post.slug}`}
+              class="mt-auto text-blue-600 hover:text-blue-800 font-medium inline-flex items-center gap-1"
+            >
+              Read more →
+            </a>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <p class="text-gray-500 text-center py-16">No blog posts found.</p>
+    )}
+  </div>
 </BlogLayout>
+

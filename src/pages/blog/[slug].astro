@@ -6,6 +6,7 @@ import { db, BlogPosts, eq } from "astro:db";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import { getPost } from "@/lib/posts";
 import { Markdown } from "astro-remote";
+import { calculateReadingTime } from "@/lib/utils";
 
 export const prerender = false
 
@@ -32,6 +33,8 @@ let content = postData.content
 if(postData.contentRef) {
 	content = await getPost(postData.contentRef)
 }
+
+const readTime = calculateReadingTime(content);
 ---
 
 <BlogLayout>
@@ -47,7 +50,7 @@ if(postData.contentRef) {
 					{postData.date.toLocaleDateString()}
 				</time>
 				<span class="mx-2">•</span>
-				<span>{postData.readTime} min read</span>
+				<span>{ readTime } min read</span>
 			</div>
 		</header>
 
