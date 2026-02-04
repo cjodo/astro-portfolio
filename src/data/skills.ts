@@ -22,7 +22,13 @@ import prismaLogo from "../assets/logos/prisma.svg"
 import reactRouterLogo from "../assets/logos/react-router.svg"
 
 export type SkillCategory = 'frontend' | 'backend' | 'tools' | 'design' | 'database'
-export type ProficiencyLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert'
+
+export enum ProficiencyLevel {
+	BEGINNER = "beginner",
+	INTERMEDIATE = "intermediate",
+	ADVANCED = "advanced",
+	EXPERT = "expert",
+}
 
 export interface Skill {
 	name: string
@@ -32,28 +38,29 @@ export interface Skill {
 }
 
 export const skills: Skill[] = [
-	{ name: "HTML5", logo: htmlLogo.src, category: 'frontend', proficiency: 'expert' },
-	{ name: "CSS3", logo: cssLogo.src, category: 'frontend', proficiency: 'expert' },
-	{ name: "JavaScript", logo: jsLogo.src, category: 'frontend', proficiency: 'advanced' },
-	{ name: "TypeScript", logo: tsLogo.src, category: 'frontend', proficiency: 'advanced' },
-	{ name: "React", logo: reactLogo.src, category: 'frontend', proficiency: 'advanced' },
-	{ name: "React Router", logo: reactRouterLogo.src, category: 'frontend', proficiency: 'intermediate' },
+	{ name: "HTML5", logo: htmlLogo.src, category: 'frontend', proficiency: ProficiencyLevel.EXPERT },
+	{ name: "CSS3", logo: cssLogo.src, category: 'frontend', proficiency: ProficiencyLevel.EXPERT },
+	{ name: "JavaScript", logo: jsLogo.src, category: 'frontend', proficiency: ProficiencyLevel.ADVANCED},
+	{ name: "TypeScript", logo: tsLogo.src, category: 'frontend', proficiency: ProficiencyLevel.ADVANCED},
+	{ name: "React", logo: reactLogo.src, category: 'frontend', proficiency: ProficiencyLevel.ADVANCED},
+	{ name: "React Router", logo: reactRouterLogo.src, category: 'frontend', proficiency: ProficiencyLevel.INTERMEDIATE},
 	{ name: "Tailwind", logo: tailwindLogo.src, category: 'frontend', proficiency: 'expert' },
 	{ name: "Next.js", logo: nextLogo.src, category: 'frontend', proficiency: 'advanced' },
 	{ name: "Node.js", logo: nodeLogo.src, category: 'backend', proficiency: 'advanced' },
-	{ name: "Python", logo: pythonLogo.src, category: 'backend', proficiency: 'intermediate' },
-	{ name: "Golang", logo: goLogo.src, category: 'backend', proficiency: 'intermediate' },
+	{ name: "Python", logo: pythonLogo.src, category: 'backend', proficiency: ProficiencyLevel.INTERMEDIATE},
+	{ name: "Golang", logo: goLogo.src, category: 'backend', proficiency: ProficiencyLevel.INTERMEDIATE},
 	{ name: "Lua", logo: luaLogo.src, category: 'backend', proficiency: 'beginner' },
 	{ name: "MongoDB", logo: mongoLogo.src, category: 'database', proficiency: 'beginner' },
-	{ name: "SQLite", logo: sqliteLogo.src, category: 'database', proficiency: 'intermediate' },
-	{ name: "PostgreSQL", logo: postgresLogo.src, category: 'database', proficiency: 'intermediate' },
-	{ name: "Prisma ORM", logo: prismaLogo.src, category: 'database', proficiency: 'intermediate' },
+	{ name: "SQLite", logo: sqliteLogo.src, category: 'database', proficiency: ProficiencyLevel.INTERMEDIATE},
+	{ name: "PostgreSQL", logo: postgresLogo.src, category: 'database', proficiency: ProficiencyLevel.INTERMEDIATE},
+	{ name: "Prisma ORM", logo: prismaLogo.src, category: 'database', proficiency: ProficiencyLevel.INTERMEDIATE},
 	{ name: "Astro", logo: astroLogo.src, category: 'tools', proficiency: 'advanced' },
-	{ name: "Docker", logo: dockerLogo.src, category: 'tools', proficiency: 'intermediate' },
+	{ name: "Docker", logo: dockerLogo.src, category: 'tools', proficiency: ProficiencyLevel.INTERMEDIATE},
 	{ name: "Git", logo: gitLogo.src, category: 'tools', proficiency: 'advanced' },
-	{ name: "Wordpress", logo: wpLogo.src, category: 'tools', proficiency: 'intermediate' },
-	{ name: "Figma", logo: figmaLogo.src, category: 'design', proficiency: 'intermediate' },
-	{ name: "Adobe", logo: adobeLogo.src, category: 'design', proficiency: 'intermediate' },
+	{ name: "Wordpress", logo: wpLogo.src, category: 'tools', proficiency: ProficiencyLevel.INTERMEDIATE},
+	{ name: "Figma", logo: figmaLogo.src, category: 'design', proficiency: ProficiencyLevel.INTERMEDIATE},
+	{ name: "Adobe", logo: adobeLogo.src, category: 'design', proficiency: ProficiencyLevel.INTERMEDIATE},
+	{ name: "Cloudflare", logo: adobeLogo.src, category: 'design', proficiency: 'beginner' },
 ]
 
 export const skillsByCategory = skills.reduce((acc, skill) => {
