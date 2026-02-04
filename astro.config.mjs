@@ -15,6 +15,8 @@ export default defineConfig({
   output: 'server',
   adapter: node({ mode: 'standalone' }),
     server: {
+
         port: 8080
-    }
+    },
+	site: "https://cjodo.com"
 });
