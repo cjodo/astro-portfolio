@@ -32,27 +32,27 @@ export const projects: Project[] = [
 		title: 'AHAS Website',
 		description: 'A charity vet website located in Edmonton. Built with a headless cms',
 		longDescription: '',
-		image: '/convert-banner.webp',
+		image: '/ahas-home.png',
 		tags: ['Headless', 'Typescript', 'CMS'],
 		liveDemo: true,
-		demoUrl: 'https://ahas.ca',
+		demoUrl: 'https://staging.ahas.ca',
 		year: 2026,
 		status: 'in-progress',
-		techStack: ['Cockpit CMS', 'TypeScript', 'Astro', 'React', 'Tailwind CSS' ]
+		techStack: ['Cockpit CMS', 'TypeScript', 'Astro', 'React', 'Tailwind CSS', 'Rest API' ]
 	},
 	{
 		id: 'comforts-from-home',
 		title: 'Comforts from Home',
 		description: 'A wordpress e-commerce site for hand knit local goods',
 		longDescription: '',
-		image: '/convert-banner.webp',
+		image: '/comforts-home.png',
 		liveDemo: true,
 		tags: [ 'CMS' , 'Wordpress' ],
 		demoUrl: 'https://comfortsfromhome.shop',
 		githubUrl: '',
 		year: 2023,
 		status: 'in-progress',
-		techStack: [ 'Wordpress' ]
+		techStack: [ 'Wordpress', 'Woocommerce' ]
 	},
 ]
 
