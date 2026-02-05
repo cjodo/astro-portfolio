@@ -29,8 +29,8 @@ export const projects: Project[] = [
 	},
 	{
 		id: 'ahas',
-		title: 'AHAS Website',
-		description: 'A charity vet website located in Edmonton. Built with a headless cms',
+		title: 'Alberta Helping Animals Society',
+		description: 'A charity vet website located in Edmonton. Built with a headless cms, Astro and React',
 		longDescription: '',
 		image: '/ahas-home.png',
 		tags: ['Headless', 'Typescript', 'CMS'],
