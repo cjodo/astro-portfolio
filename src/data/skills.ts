@@ -20,6 +20,12 @@ import postgresLogo from "../assets/logos/postgres.svg"
 import sqliteLogo from "../assets/logos/sqlite.svg"
 import prismaLogo from "../assets/logos/prisma.svg"
 import reactRouterLogo from "../assets/logos/react-router.svg"
+import cloudflareLogo from "../assets/logos/cloudflare.svg"
+import vercelLogo from "../assets/logos/vercel.svg"
+import supabaseLogo from "../assets/logos/supabase.svg"
+import railwayLogo from "../assets/logos/railway.svg"
+
+
 
 export type SkillCategory = 'frontend' | 'backend' | 'tools' | 'design' | 'database'
 
@@ -44,23 +50,23 @@ export const skills: Skill[] = [
 	{ name: "TypeScript", logo: tsLogo.src, category: 'frontend', proficiency: ProficiencyLevel.ADVANCED},
 	{ name: "React", logo: reactLogo.src, category: 'frontend', proficiency: ProficiencyLevel.ADVANCED},
 	{ name: "React Router", logo: reactRouterLogo.src, category: 'frontend', proficiency: ProficiencyLevel.INTERMEDIATE},
-	{ name: "Tailwind", logo: tailwindLogo.src, category: 'frontend', proficiency: 'expert' },
-	{ name: "Next.js", logo: nextLogo.src, category: 'frontend', proficiency: 'advanced' },
-	{ name: "Node.js", logo: nodeLogo.src, category: 'backend', proficiency: 'advanced' },
+	{ name: "Tailwind", logo: tailwindLogo.src, category: 'frontend', proficiency: ProficiencyLevel.EXPERT},
+	{ name: "Next.js", logo: nextLogo.src, category: 'frontend', proficiency: ProficiencyLevel.ADVANCED},
+	{ name: "Node.js", logo: nodeLogo.src, category: 'backend', proficiency: ProficiencyLevel.ADVANCED},
 	{ name: "Python", logo: pythonLogo.src, category: 'backend', proficiency: ProficiencyLevel.INTERMEDIATE},
 	{ name: "Golang", logo: goLogo.src, category: 'backend', proficiency: ProficiencyLevel.INTERMEDIATE},
-	{ name: "Lua", logo: luaLogo.src, category: 'backend', proficiency: 'beginner' },
-	{ name: "MongoDB", logo: mongoLogo.src, category: 'database', proficiency: 'beginner' },
+	{ name: "Lua", logo: luaLogo.src, category: 'backend', proficiency: ProficiencyLevel.ADVANCED},
+	{ name: "MongoDB", logo: mongoLogo.src, category: 'database', proficiency: ProficiencyLevel.BEGINNER},
 	{ name: "SQLite", logo: sqliteLogo.src, category: 'database', proficiency: ProficiencyLevel.INTERMEDIATE},
 	{ name: "PostgreSQL", logo: postgresLogo.src, category: 'database', proficiency: ProficiencyLevel.INTERMEDIATE},
 	{ name: "Prisma ORM", logo: prismaLogo.src, category: 'database', proficiency: ProficiencyLevel.INTERMEDIATE},
-	{ name: "Astro", logo: astroLogo.src, category: 'tools', proficiency: 'advanced' },
+	{ name: "Astro", logo: astroLogo.src, category: 'tools', proficiency: ProficiencyLevel.ADVANCED },
 	{ name: "Docker", logo: dockerLogo.src, category: 'tools', proficiency: ProficiencyLevel.INTERMEDIATE},
-	{ name: "Git", logo: gitLogo.src, category: 'tools', proficiency: 'advanced' },
+	{ name: "Git", logo: gitLogo.src, category: 'tools', proficiency: ProficiencyLevel.ADVANCED},
 	{ name: "Wordpress", logo: wpLogo.src, category: 'tools', proficiency: ProficiencyLevel.INTERMEDIATE},
 	{ name: "Figma", logo: figmaLogo.src, category: 'design', proficiency: ProficiencyLevel.INTERMEDIATE},
 	{ name: "Adobe", logo: adobeLogo.src, category: 'design', proficiency: ProficiencyLevel.INTERMEDIATE},
-	{ name: "Cloudflare", logo: adobeLogo.src, category: 'design', proficiency: 'beginner' },
+	{ name: "Cloudflare", logo: adobeLogo.src, category: 'design', proficiency: ProficiencyLevel.BEGINNER},
 ]
 
 export const skillsByCategory = skills.reduce((acc, skill) => {
