@@ -43,10 +43,8 @@ let currentSession = null;
 let lastUpdateTime = 0;
 
 const renderStatus = (session, isOffline = false) => {
-	console.log('[NeovimStatus] renderStatus called:', { session: session, isOffline: isOffline });
 
 	if (isOffline || !session) {
-		console.log('[NeovimStatus] Rendering offline state - isOffline:', isOffline, '!session:', !session);
 		indicator.innerHTML = '<div class="w-2 h-2 bg-gray-400 rounded-full"></div><span class="text-xs text-gray-400">Offline</span>';
 		container.innerHTML = `
 <div class="flex flex-col items-center justify-center py-8 text-gray-400">
@@ -63,21 +61,6 @@ const renderStatus = (session, isOffline = false) => {
 		const statusColor = idle ? 'yellow' : 'green';
 		const statusIcon = idle ? '🟡' : '🟢';
 		const statusText = idle ? 'Idle' : 'Active';
-
-		console.log('[NeovimStatus] Active session check:', {
-			timeSinceUpdate: timeSinceUpdate.toFixed(2) + 's',
-			idle: idle,
-			lastUpdateTime: new Date(lastUpdateTime).toISOString(),
-			currentTime: new Date().toISOString(),
-			sessionData: {
-				user: session.user,
-				file: session.file,
-				filetype: session.filetype,
-				cwd: session.cwd,
-				mode: session.mode,
-				received_at: session.received_at
-			}
-		});
 
 		indicator.innerHTML = `<div class="w-2 h-2 bg-${statusColor}-400 rounded-full ${idle ? '' : 'animate-pulse'}"></div><span class="text-xs text-${statusColor}-400">${statusText}</span>`;
 
@@ -137,27 +120,17 @@ const evtSource = new EventSource("/api/presence/stream");
 
 evtSource.onmessage = (event) => {
 	const data = JSON.parse(event.data);
-	console.log('[NeovimStatus] SSE message received:', { 
-		status: data.status, 
-		hasData: !!data,
-		timestamp: new Date().toISOString(),
-		dataKeys: Object.keys(data)
-	});
 
 	if (data.status == "online") {
-		console.log('[NeovimStatus] Processing online status, updating session');
 		currentSession = data;
 		lastUpdateTime = Date.now();
 		renderStatus(data, false);
 	} else {
-		console.log('[NeovimStatus] Non-online status received:', data.status);
 	}
 };
 
 evtSource.onerror = (err) => {
-	console.log('[NeovimStatus] SSE error occurred, switching to offline mode:', err);
 	renderStatus(null, true);
-	console.error("[NeovimStatus] SSE error:", err);
 };
 
 
@@ -167,14 +140,6 @@ setInterval(() => {
 	const hasCurrentSession = !!currentSession;
 	const isIdle = hasCurrentSession && timeSinceUpdate > 5 && timeSinceUpdate <= 15;
 	const isOffline = !hasCurrentSession || timeSinceUpdate > 15;
-
-	console.log('[NeovimStatus] Periodic check:', {
-		hasCurrentSession,
-		timeSinceUpdate: timeSinceUpdate === Infinity ? 'never' : timeSinceUpdate.toFixed(2) + 's',
-		isIdle,
-		isOffline,
-		lastUpdateTime: currentSession ? new Date(lastUpdateTime).toISOString() : 'none'
-	});
 
 	if (isOffline) {
 		renderStatus(null, true); // Show offline after 15s
