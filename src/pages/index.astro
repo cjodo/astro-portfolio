@@ -7,6 +7,7 @@ import AboutSkills from '../components/Skills/AboutSkills.astro';
 import ProjectsSection from '../components/Projects/ProjectsSection.astro';
 import Contact from '../components/Contact.astro';
 import { skills } from '../data/skills';
+import NeovimStatus from '@/components/NeovimStatus.astro';
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
@@ -18,7 +19,6 @@ import { skills } from '../data/skills';
 	<main class="bg-white text-black">
 		<section class="mx-auto max-w-6xl px-6 py-20 md:py-32" id="about">
 			<h2 class="text-3xl md:text-4xl font-bold pb-6 md:pb-8 text-center mt-5" >About Me</h2>
-			
 			<div class="max-w-4xl mx-auto">
 				<p class="text-lg text-gray-700 mb-8 text-center leading-relaxed">
 					I'm a web developer and designer, based in Edmonton AB, Canada. I have a passion for learning, building, designing and sharing meaningful, and performant websites. I'm always exploring new ideas and projects, check them out on my GitHub!
@@ -44,6 +44,11 @@ import { skills } from '../data/skills';
 							<li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>Accessibility</li>
 						</ul>
 					</div>
+				</div>
+
+				<div class="flex flex-col justify-center items-center">
+					<!-- <h2>Always working on something</h2> -->
+					<NeovimStatus sseUrl="/api/presence"/>
 				</div>
 			</div>
 
