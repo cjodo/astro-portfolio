@@ -1,11 +1,24 @@
 
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-C1ZFRHK846"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-C1ZFRHK846');
+  // Defer GTM until page is idle
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => loadGTM());
+  } else {
+    setTimeout(loadGTM, 3000);
+  }
+  
+  function loadGTM() {
+    const script = document.createElement('script');
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-C1ZFRHK846';
+    script.async = true;
+    document.head.appendChild(script);
+    
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', 'G-C1ZFRHK846');
+  }
 </script>
 
