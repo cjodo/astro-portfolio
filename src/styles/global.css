@@ -1,9 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap");
 @import "tailwindcss";
-
-@theme {
-	--font-saira: "Saira Stencil One", sans-serif;
-}
 
 /* Theme CSS Variables */
 :root {

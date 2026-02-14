@@ -1,12 +1,10 @@
 ---
 import type { Project } from '../../data/projects';
+import { Image } from 'astro:assets';
 import Star from "../icons/Star.astro"
 import GithubIcon from '../icons/GithubIcon.astro';
 import ExternalLinkIcon from '../icons/ExternalLinkIcon.astro';
-import { 
-	getRepoStarCount,
-	extractRepoName
-} from '@/lib/utils';
+import { extractRepoName } from '@/lib/utils';
 
 interface Props {
 	project: Project;
@@ -16,18 +14,20 @@ interface Props {
 const { project, compact = false } = Astro.props;
 
 const githubName = extractRepoName(project.githubUrl ?? "");
-const stars = getRepoStarCount(githubName ?? "")
 ---
 
 <div class={`group bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 ${compact ? '' : 'h-full'}`}>
 	<!-- Project Image -->
 	<div class={`relative overflow-hidden ${compact ? 'h-40' : 'h-48'} bg-gray-100`}>
 		{project.image ? (
-		<img 
+		<Image 
 			src={project.image} 
 			alt={project.title}
+			width={600}
+			height={320}
 			class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
 			loading="lazy"
+			decoding="async"
 		/>
 		) : (
 		<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
@@ -110,13 +110,27 @@ const stars = getRepoStarCount(githubName ?? "")
 				<GithubIcon class="w-4 h-4" />
 				{compact ? '' : 'View Code'}
 				<Star />  
-				{ stars }
+				<span class="github-stars" data-repo={githubName}>--</span>
 			</a>
 
 			)}
 		</div>
 	</div>
 </div>
+
+<script>
+document.querySelectorAll('.github-stars').forEach(async (el) => {
+	const repo = el.getAttribute('data-repo');
+	if (!repo) return;
+	try {
+		const res = await fetch(`https://api.github.com/repos/cjodo/${repo}`);
+		const data = await res.json();
+		el.textContent = data.stargazers_count?.toString() || '0';
+	} catch {
+		el.textContent = '0';
+	}
+});
+</script>
 
 <style>
 .line-clamp-2 {

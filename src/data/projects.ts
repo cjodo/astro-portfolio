@@ -3,7 +3,7 @@ export interface Project {
 	title: string
 	description: string
 	longDescription?: string
-	image: string
+	image: ImageMetadata
 	tags: string[]
 	demoUrl?: string
 	githubUrl?: string
@@ -13,13 +13,17 @@ export interface Project {
 	techStack: string[]
 }
 
+import ahasHome from '../assets/images/ahas-home.png';
+import comfortsHome from '../assets/images/comforts-home.png';
+import convertBanner from '../assets/images/convert-banner.webp';
+
 export const projects: Project[] = [
 	{
 		id: 'convert',
 		title: 'convert.nvim',
 		description: 'A Neovim plugin to help with css unit conversions',
 		longDescription: 'A nvim plugin written in lua allowing for unit, size and number conversions.  Including docs and config.',
-		image: '/convert-banner.webp',
+		image: convertBanner,
 		tags: ['Lua', 'Plugin', 'Tools', 'Nvim'],
 		githubUrl: 'https://github.com/cjodo/convert.nvim',
 		liveDemo: false,
@@ -32,7 +36,7 @@ export const projects: Project[] = [
 		title: 'Alberta Helping Animals Society',
 		description: 'A charity vet website located in Edmonton. Built with a headless cms, Astro and React',
 		longDescription: '',
-		image: '/ahas-home.png',
+		image: ahasHome,
 		tags: ['Headless', 'Typescript', 'CMS'],
 		liveDemo: true,
 		demoUrl: 'https://staging.ahas.ca',
@@ -45,7 +49,7 @@ export const projects: Project[] = [
 		title: 'Comforts from Home',
 		description: 'A wordpress e-commerce site for hand knit local goods',
 		longDescription: '',
-		image: '/comforts-home.png',
+		image: comfortsHome,
 		liveDemo: true,
 		tags: [ 'CMS' , 'Wordpress' ],
 		demoUrl: 'https://comfortsfromhome.shop',

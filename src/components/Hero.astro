@@ -1,5 +1,4 @@
 ---
-import grainSVG from '../assets/grain.svg';
 import DownArrow from './icons/DownArrow.astro';
 ---
 
@@ -11,18 +10,11 @@ import DownArrow from './icons/DownArrow.astro';
 	aria-label="Hero section"
 >
 	<!-- Subtle background elements -->
-	<div class="absolute inset-0 opacity-20" aria-hidden="true">
+	<div class="absolute inset-0 opacity-30" aria-hidden="true">
 		<div class="absolute top-20 left-20 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl"></div>
 		<div class="absolute bottom-20 right-20 w-32 h-32 bg-purple-500/20 rounded-full blur-2xl"></div>
 		<div class="absolute top-1/2 left-1/3 w-24 h-24 bg-cyan-500/15 rounded-full blur-xl"></div>
 	</div>
-	
-	<!-- Grain overlay -->
-	<div 
-		class="absolute inset-0 opacity-30"
-		style={`background-image: url('${grainSVG.src}'); background-repeat: repeat;`}
-		aria-hidden="true"
-	></div>
 
 	<!-- Main content container -->
 	<div class="relative z-20 text-center px-6 max-w-4xl mx-auto">
