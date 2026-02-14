@@ -9,8 +9,6 @@ declare global {
 export const POST: APIRoute = async ({ request }) => {
 	try {
 		const body = await request.json();
-		console.log(body);
-		
 		// Update global presence data
 		globalThis.lastPresence = { ...body, received_at: new Date().toISOString() };
 
