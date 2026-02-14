@@ -11,7 +11,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
-  integrations: [db(), node({ mode: 'standalone' }), sitemap()],
+  integrations: [db(), sitemap()],
   output: 'server',
   adapter: node({ mode: 'standalone' }),
     server: {
