@@ -5,7 +5,6 @@
 	- Single session support with offline status
 	- Styled with Tailwind
 */
-
 ---
 
 <div id="neovim-presence" class="w-full max-w-md p-6 bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl shadow-2xl border border-slate-700 text-white font-mono text-sm relative">
@@ -36,13 +35,17 @@
 	<span class="absolute right-4 mt-1 text-slate-400 hover:underline"><a href="https://github.com/cjodo/presence.nvim">How I did this?</a></span>
 </div>
 
-<script is:inline>
-const container = document.getElementById("status-content");
-const indicator = document.getElementById("status-indicator");
-let currentSession = null;
+<script>
+import { createPresenceClient } from "../lib/presence";
+
+const presence = createPresenceClient("/api/presence/stream");
+
+const container = document.getElementById("status-content")!;
+const indicator = document.getElementById("status-indicator")!;
+let currentSession: ReturnType<typeof presence.getState> = null;
 let lastUpdateTime = 0;
 
-const renderStatus = (session, isOffline = false) => {
+const renderStatus = (session: ReturnType<typeof presence.getState>, isOffline = false) => {
 
 	if (isOffline || !session) {
 		indicator.innerHTML = '<div class="w-2 h-2 bg-gray-400 rounded-full"></div><span class="text-xs text-gray-400">Offline</span>';
@@ -116,23 +119,11 @@ const renderStatus = (session, isOffline = false) => {
 	}
 };
 
-const evtSource = new EventSource("/api/presence/stream");
-
-evtSource.onmessage = (event) => {
-	const data = JSON.parse(event.data);
-
-	if (data.status == "online") {
-		currentSession = data;
-		lastUpdateTime = Date.now();
-		renderStatus(data, false);
-	} else {
-	}
-};
-
-evtSource.onerror = (err) => {
-	renderStatus(null, true);
-};
-
+presence.subscribe((state, prevState) => {
+	currentSession = state;
+	lastUpdateTime = Date.now();
+	renderStatus(state, false);
+});
 
 // Check for offline status periodically
 setInterval(() => {
@@ -142,11 +133,11 @@ setInterval(() => {
 	const isOffline = !hasCurrentSession || timeSinceUpdate > 15;
 
 	if (isOffline) {
-		renderStatus(null, true); // Show offline after 15s
+		renderStatus(null, true);
 	} else if (isIdle) {
-		renderStatus(currentSession, false); // Show idle between 5-15s
+		renderStatus(currentSession, false);
 	} else if (hasCurrentSession) {
-		renderStatus(currentSession, false); // Show active for first 5s
+		renderStatus(currentSession, false);
 	}
 }, 5000);
 </script>
