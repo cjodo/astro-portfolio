@@ -53,6 +53,25 @@ html.dark {
 }
 
 /* Utility classes using theme variables */
+@layer base {
+  /* Focus styles for accessibility */
+  :focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
 @layer utilities {
   .animate-fade-up {
     @apply opacity-0 translate-y-6 transition-all duration-700 ease-out;

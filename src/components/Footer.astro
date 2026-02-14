@@ -6,9 +6,10 @@ import GithubLogo from './icons/GithubLogo.astro';
 <footer
   id="site-footer"
   class="relative bg-[#171717] text-white overflow-hidden"
+  role="contentinfo"
 >
   <!-- Grain overlay for subtle texture -->
-  <div class="absolute inset-0 opacity-10 mix-blend-overlay pointer-events-none"></div>
+  <div class="absolute inset-0 opacity-10 mix-blend-overlay pointer-events-none" aria-hidden="true"></div>
 
   <div class="relative max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
     <!-- Logo / Site Name -->
@@ -17,7 +18,7 @@ import GithubLogo from './icons/GithubLogo.astro';
     </span>
 
     <!-- Navigation Links -->
-    <nav class="flex gap-6 text-lg font-bold">
+    <nav class="flex gap-6 text-lg font-bold" aria-label="Footer navigation">
       <a href="#projects" class="transition-colors duration-300 hover:text-[#1F4ED8]">Projects</a>
       <a href="#about" class="transition-colors duration-300 hover:text-[#1F4ED8]">About</a>
       <a href="#contact" class="transition-colors duration-300 hover:text-[#1F4ED8]">Contact</a>
@@ -25,7 +26,7 @@ import GithubLogo from './icons/GithubLogo.astro';
 
     <!-- Socials -->
     <div class="flex gap-4">
-      <a href="https://github.com/cjodo" target="_blank" rel="noopener noreferrer" class="hover:text-[#1F4ED8] transition-colors duration-300">
+      <a href="https://github.com/cjodo" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" class="hover:text-[#1F4ED8] transition-colors duration-300">
         <!-- GitHub icon -->
 				<GithubLogo />
       </a>

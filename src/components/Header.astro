@@ -16,17 +16,20 @@ interface Props {
 <header
 	id="site-header"
 	class=`
-fixed top-0 left-0
-w-full z-50
-backdrop-blur-md text-secondary
-transition-colors duration-300`
+ fixed top-0 left-0
+ w-full z-50
+ backdrop-blur-md text-secondary
+ transition-colors duration-300`
+	role="banner"
 >
 	<div class="mx-auto max-w-7xl px-4 sm:px-6 py-4 flex items-center justify-between">
-		<a href="/" class="transition-all duration-200 hover:text-accent hover:scale-105 active:scale-95"><span class="font-semibold tracking-tight text-xl">[cjodo.dev]</span></a>
+		<a href="/" class="transition-all duration-200 hover:text-accent hover:scale-105 active:scale-95" aria-label="Curtis O'Donnell - Home">
+			<span class="font-semibold tracking-tight text-xl">[cjodo.dev]</span>
+		</a>
 
 		<!-- Desktop Navigation -->
 		<div class="hidden md:flex align-vertical justify-center gap-6 items-center">
-			<nav class="flex gap-6 text-lg font-bold">
+			<nav class="flex gap-6 text-lg font-bold" aria-label="Main navigation">
 				<a href="/#projects" class="transition-all duration-200 hover:text-accent hover:scale-105 active:scale-95">Projects</a>
 				<a href="/#about" class="transition-all duration-200 hover:text-accent hover:scale-105 active:scale-95">About</a>
 				<a href="#contact" class="transition-all duration-200 hover:text-accent hover:scale-105 active:scale-95">Contact</a>
@@ -81,6 +84,8 @@ transition-colors duration-300`
 	<div
 		id="mobile-menu"
 		class="md:hidden absolute top-full left-0 w-full bg-primary backdrop-blur-md shadow-lg transform -translate-y-full opacity-0 pointer-events-none transition-all duration-300 ease-in-out"
+		role="navigation"
+		aria-label="Mobile navigation"
 	>
 		<nav class="flex flex-col p-4 space-y-3">
 			<a href="/#projects" class="mobile-nav-link text-lg font-medium py-2 px-4 rounded-lg hover:bg-tertiary hover:text-accent hover:translate-x-1 active:bg-secondary transition-all duration-200">Projects</a>
